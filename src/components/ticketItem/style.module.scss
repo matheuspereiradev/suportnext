@@ -1,7 +1,52 @@
-.container{
+.container {
     background-color: var(--white);
     border: 1px solid var(--light-border);
-    .firstLine{
-        color: brown;
+    padding: 0.5rem 1rem;
+    display: flex;
+
+    .content{
+
+        .firstLine {        
+            width: 100%;
+            display: flex;
+            span{
+                font-size: 0.85rem;
+            }
+            strong{
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+    
+        .title{
+            font-size: 1.2rem;
+            padding-top: 0.3rem;
+            color: black;
+            span{
+                font-weight: 550;
+            }
+            strong{
+                font-weight: 700;
+            }
+        }
+    
+        .categoryline{
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding-top: 0.3rem;
+        }
+
+    }
+
+    .date{
+        
+        margin-left: auto;
+        
+    }
+    
+    
+
+    &:hover {
+        background-color: var(--ultra-light-border);
     }
 }

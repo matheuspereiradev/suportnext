@@ -17,6 +17,8 @@ export default function Home() {
       <h1>Tickets</h1>
       <br/>
       <TicketItem/>
+      <TicketItem/>
+      <TicketItem/>
       
     </main>
 
