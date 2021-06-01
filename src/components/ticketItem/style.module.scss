@@ -4,33 +4,37 @@
     padding: 0.5rem 1rem;
     display: flex;
 
-    .content{
+    .content {
 
-        .firstLine {        
+        .firstLine {
             width: 100%;
             display: flex;
-            span{
+
+            span {
                 font-size: 0.85rem;
             }
-            strong{
+
+            strong {
                 padding-left: 1rem;
                 padding-right: 1rem;
             }
         }
-    
-        .title{
+
+        .title {
             font-size: 1.2rem;
             padding-top: 0.3rem;
             color: black;
-            span{
+
+            span {
                 font-weight: 550;
             }
-            strong{
+
+            strong {
                 font-weight: 700;
             }
         }
-    
-        .categoryline{
+
+        .categoryline {
             font-size: 0.85rem;
             font-weight: 600;
             padding-top: 0.3rem;
@@ -38,13 +42,11 @@
 
     }
 
-    .date{
-        
+    .dateContent {
         margin-left: auto;
-        
+        font-weight: 600;
+        color: black;
     }
-    
-    
 
     &:hover {
         background-color: var(--ultra-light-border);

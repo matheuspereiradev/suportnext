@@ -16,9 +16,11 @@ export default function Home() {
     <main className={styles.content}>
       <h1>Tickets</h1>
       <br/>
-      <TicketItem/>
-      <TicketItem/>
-      <TicketItem/>
+
+      <TicketItem status={"em andamento"} user={"matheus"} company = {"wa"} code={"123"} title={"corrigir adu"} category = {"Correção de bugs"} opendate={"2020 05 04 20:00:00"}/>
+      <TicketItem status={"em andamento"} user={"matheus"} company = {"wa"} code={"123"} title={"corrigir adu"} category = {"Correção de bugs"} opendate={"2020 05 04 20:00:00"}/>
+      <TicketItem status={"em andamento"} user={"matheus"} company = {"wa"} code={"123"} title={"corrigir adu"} category = {"Correção de bugs"} opendate={"2020 05 04 20:00:00"}/>
+
       
     </main>
 
