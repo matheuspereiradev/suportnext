@@ -1,19 +1,26 @@
 import styles from "./style.module.scss";
+import Link from 'next/link'
 
-export function Header(){
+export function Header() {
 
-    return (
-        <header className={styles.headerContainer}>
-          <img src="/logo.png" alt="WA logo" className={styles.logo}></img>  
-          <ul className={styles.navLinks}>
-            <button className={styles.onlyText}>
-              Entrar
+  return (
+    <header className={styles.headerContainer}>
+      <Link href="/">
+        <img src="/logo.png" alt="WA logo" className={styles.logo}></img>
+      </Link>
+
+      <ul className={styles.navLinks}>
+        <Link href="/login">
+          <button className={styles.onlyText}>
+            Entrar
             </button>
-            <button className={styles.withBorder}>
-              Cadastre-se
+        </Link>
+
+        <button className={styles.withBorder}>
+          Cadastre-se
             </button>
-          </ul> 
-        </header>
-    );
+      </ul>
+    </header>
+  );
 
 }

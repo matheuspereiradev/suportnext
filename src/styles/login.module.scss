@@ -1,0 +1,52 @@
+.loginPage {
+
+    .card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        vertical-align: middle;
+
+        .content {
+            background-color: white;
+            border-radius: 4px;
+            box-shadow: 0 0 10px 0 #00000040;
+            width: 30rem;
+            margin: 4rem;
+            padding: 1rem;
+
+            .loginForm {
+                padding: 2rem;
+
+                button {
+                    text-transform: uppercase;
+                    outline: 0;
+                    background: var(--blue-wa);
+                    width: 100%;
+                    border: 0;
+                    padding: .8rem;
+                    color: #FFFFFF;
+                    font-size: 1rem;
+                    -webkit-transition: all 0.3 ease;
+                    transition: all 0.3 ease;
+                    cursor: pointer;
+                    transition: background-color 0.2s;
+                    &:hover {
+                        background-color: var(--blue);
+                    }
+                }
+
+                input {
+                    outline: 0;
+                    background: #dfdfdf;
+                    width: 100%;
+                    border: 0;
+                    margin: 0 0 1rem;
+                    padding: .8rem;
+                    box-sizing: border-box;
+                    font-size: 1rem;
+                }
+            }
+        }
+    }
+}
