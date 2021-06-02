@@ -66,13 +66,13 @@
         width: 10rem;
         padding: 0.9rem 0.7rem 0.9rem 0.7rem;
         border-radius: 4rem;
-        border: var(--primary) solid 1px;
+        border: var(--blue-wa) solid 1px;
         text-decoration: none;
-        background-color: var(--primary-light);
+        background-color: var(--blue-wa);
         color: var(--white);
         transition: background-color 0.3s;
         &:hover {
-            background-color: var(--black);
+            background-color: var(--blue);
             color: var(--white);
         }
     }
