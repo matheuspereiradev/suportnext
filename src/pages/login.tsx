@@ -16,13 +16,14 @@ export default function Home() {
 
                 <div className={styles.card}>
                     <div className={styles.content}>
-                            <h1>Entrar</h1>
-                            <div className={styles.loginForm}>
+                        <h1>Entrar</h1>
+                        <div className={styles.loginForm}>
                             <input type="text" placeholder="Email"></input><br />
                             <input type="password" placeholder="Senha"></input><br />
                             <button>Entrar</button>
-                            </div>
-                            
+                            <div className={styles.forgotPassword}>Esqueci minha senha</div>
+                        </div>
+
                     </div>
 
                 </div>

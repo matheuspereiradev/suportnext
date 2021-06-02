@@ -18,6 +18,13 @@
             .loginForm {
                 padding: 2rem;
 
+                .forgotPassword{
+                    font-weight: 600;
+                    font-size: 0.9rem;
+                    padding-top: 0.9rem;
+                    color:var(--blue-wa)
+                }
+
                 button {
                     text-transform: uppercase;
                     outline: 0;
