@@ -72,8 +72,7 @@ export default function TicketList({tickets}: TicketListPros) {
           })
         ):(
           <div>
-            <p>Você não tem tickets abertos</p>
-            {console.log("uau")}
+            <p>Você não possui tickets abertos</p>
           </div>
         )
         

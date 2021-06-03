@@ -4,7 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 
 export function Header() {
 
-  const { isLogged, user } = useAuth()
+  const { isLogged, user , handleLogout} = useAuth()
   return (
     <header className={styles.headerContainer}>
       <Link href="/">
@@ -17,7 +17,7 @@ export function Header() {
           isLogged ? (
             <>
               <div>{user.name}</div>
-              <button className={styles.withBorder}>
+              <button className={styles.withBorder} onClick={()=>handleLogout()}>
                 Sair
             </button>
             </>

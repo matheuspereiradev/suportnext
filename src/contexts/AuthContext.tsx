@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import {browserAPIRequest} from'../services/api'
-import {setCookie,parseCookies} from 'nookies'
+import {setCookie,parseCookies,destroyCookie} from 'nookies'
 import Router from 'next/router'
 
 interface User{
@@ -16,7 +16,8 @@ interface User{
 interface AuthContextData{
     user: User,
     isLogged:boolean,
-    handleLogin:(email:string,password:string)=>Promise<void>
+    handleLogin:(email:string,password:string)=>Promise<void>,
+    handleLogout:()=>void
 }
 
 interface ChildrenProvider{
@@ -45,20 +46,23 @@ export const AuthProvider = ({children}:ChildrenProvider) => {
     const handleLogin = async (email:string,password:string) =>{
 
         const {data} = await browserAPIRequest.post('session',{email,password})
-
         setUser(data.user)
-
-        browserAPIRequest.defaults.headers['authorization'] = `Bearer ${data.token}`
-
+        browserAPIRequest.defaults.headers['authorization'] = `Bearer ${data.token}`;
         setCookie(undefined,"suportewatoken",data.token,{
             maxAge: 60 * 60 * 2 //2 hours
         })
-
         Router.push('/ticket')
     }
 
+    const handleLogout = ()=>{
+        destroyCookie(undefined,"suportewatoken")
+        setUser(undefined)
+        browserAPIRequest.defaults.headers['authorization'] = '';
+        Router.push('/')
+    }
+
     return (
-        <AuthContext.Provider value={{user,isLogged,handleLogin}}>
+        <AuthContext.Provider value={{user,isLogged,handleLogin,handleLogout}}>
             {children}
         </AuthContext.Provider>
     )
