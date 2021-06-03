@@ -67,11 +67,11 @@ export default function TicketList({tickets}: TicketListPros) {
         { tickets.length>0 ? (
           tickets.map(tkt=>{
             return(
-              <TicketItem key={tkt.id} status={tkt.status.name} user={`${tkt.requester.name} ${tkt.requester.surname}`} company={tkt.company.name} code={tkt.id} title={tkt.title} category={tkt.category.name} opendate={tkt.created_at} />
+              <TicketItem key={tkt.id} status={tkt.status.name} user={`${tkt.requester.name} ${tkt.requester.surname} (${tkt.requester.email})`} company={tkt.company.name} code={tkt.id} title={tkt.title} category={tkt.category.name} opendate={tkt.created_at} />
             )
           })
         ):(
-          <div>
+          <div className={styles.textNoTicket}>
             <p>Você não possui tickets abertos</p>
           </div>
         )

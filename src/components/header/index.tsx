@@ -16,7 +16,7 @@ export function Header() {
         {
           isLogged ? (
             <>
-              <div>{user.name}</div>
+              <div className={styles.userName}>{user.name}</div>
               <button className={styles.withBorder} onClick={()=>handleLogout()}>
                 Sair
             </button>

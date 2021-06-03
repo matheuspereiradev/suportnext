@@ -2,59 +2,13 @@
     width: 100%;
     padding: 0rem 1rem;
 
+    .textNoTicket{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        vertical-align: middle;
+        padding-top: 5rem;
+    }
+
 }
-
-$media-desktop: "only screen and (max-width : 1024px)";
-$media-tablet: "only screen and (max-width : 768px)";
-$media-mobile: "only screen and (max-width : 600px)";
-$media-mobile-sm: "only screen and (max-width : 480px)";
-
-
-@media #{$media-desktop} {
-    .content{
-        
-        
-    }
-  }
-  
-  @media #{$media-tablet} {
-    .contentMain{
-        
-        .leftArea{
-            display: none;
-        }
-
-        .table{
-            width: 100%;
-        }
-
-    }
-  }
-  
-  @media #{$media-mobile} {
-    .contentMain{
-        
-        .leftArea{
-            display: none;
-        }
-
-        .table{
-            width: 100%;
-        }
-
-    }
-  }
-  
-  @media #{$media-mobile-sm} {
-    .contentMain{
-        
-        .leftArea{
-            display: none;
-        }
-
-        .table{
-            width: 100%;
-        }
-
-    }
-  }
