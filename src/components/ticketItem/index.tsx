@@ -7,7 +7,7 @@ interface ticket{
     code:string,
     title:string,
     category:string,
-    opendate:string
+    opendate:Date
     
 }
 

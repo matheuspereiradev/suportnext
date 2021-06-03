@@ -1,4 +1,7 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import {browserAPIRequest} from'../services/api'
+import {setCookie,parseCookies} from 'nookies'
+import Router from 'next/router'
 
 interface User{
     id: string,
@@ -6,13 +9,14 @@ interface User{
     surname:string,
     email:string,
     idCompany:number,
+    isAdmin:boolean,
     gender:string
 }
 
 interface AuthContextData{
     user: User,
-    token: string,
-    isLogged:boolean
+    isLogged:boolean,
+    handleLogin:(email:string,password:string)=>Promise<void>
 }
 
 interface ChildrenProvider{
@@ -24,16 +28,37 @@ export const AuthContext = createContext({} as AuthContextData)
 
 export const AuthProvider = ({children}:ChildrenProvider) => {
 
-    const [user, setUser] = useState<User>()
-    const [token,setToken] = useState('')
-    const [isLogged, setIsLogged] = useState(false)
+    const [user, setUser] = useState<User|undefined>(undefined)
+    const isLogged = !!user
 
-    const handleLogin = (email:string,password:string) =>{
-        
+    useEffect(()=>{
+        const {'suportewatoken':token} = parseCookies();
+
+        if(token){
+            browserAPIRequest.get(`/session/${token}`).then(response=>{
+                setUser(response.data.user)
+                console.log(response)
+            })
+        }
+    },[])
+
+    const handleLogin = async (email:string,password:string) =>{
+
+        const {data} = await browserAPIRequest.post('session',{email,password})
+
+        setUser(data.user)
+
+        browserAPIRequest.defaults.headers['authorization'] = `Bearer ${data.token}`
+
+        setCookie(undefined,"suportewatoken",data.token,{
+            maxAge: 60 * 60 * 2 //2 hours
+        })
+
+        Router.push('/ticket')
     }
 
     return (
-        <AuthContext.Provider value={{user,token,isLogged}}>
+        <AuthContext.Provider value={{user,isLogged,handleLogin}}>
             {children}
         </AuthContext.Provider>
     )
