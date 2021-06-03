@@ -38,7 +38,6 @@ export const AuthProvider = ({children}:ChildrenProvider) => {
         if(token){
             browserAPIRequest.get(`/session/${token}`).then(response=>{
                 setUser(response.data.user)
-                console.log(response)
             })
         }
     },[])

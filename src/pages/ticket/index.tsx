@@ -4,9 +4,10 @@ import { TicketItem } from "../../components/ticketItem";
 import { useAuth } from "../../contexts/AuthContext";
 import styles from "../../styles/ticket/index.module.scss";
 import { parseCookies } from 'nookies';
-import {format,parseISO} from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { ptBR } from "date-fns/locale";
 import { clientAPIRequest } from '../../services/api';
+import { FaFilter, FaPlusCircle } from 'react-icons/fa'
 
 interface Status {
   id: number,
@@ -37,16 +38,16 @@ interface Ticket {
   description: string,
   created_at: Date,
   requester: Requester
-  status:Status,
-  company:Company,
-  category:Category
+  status: Status,
+  company: Company,
+  category: Category
 }
 
 interface TicketListPros {
   tickets: Array<Ticket>
 }
 
-export default function TicketList({tickets}: TicketListPros) {
+export default function TicketList({ tickets }: TicketListPros) {
 
   const { user } = useAuth();
 
@@ -60,24 +61,41 @@ export default function TicketList({tickets}: TicketListPros) {
         <meta name="author" content="matheuspereiradev, matheuslima20111997@gmail.com" />
         <meta name="keywords" content="imoveis,imóveis,casa,comprar,haile,corretor,corretores,apartamentos,aluguel,arrendatar,casas" />
       </Head>
-      <main className={styles.content}>
-        <h1>Tickets</h1>
-        <br />
-
-        { tickets.length>0 ? (
-          tickets.map(tkt=>{
-            return(
-              <TicketItem key={tkt.id} status={tkt.status.name} user={`${tkt.requester.name} ${tkt.requester.surname} (${tkt.requester.email})`} company={tkt.company.name} code={tkt.id} title={tkt.title} category={tkt.category.name} opendate={tkt.created_at} />
-            )
-          })
-        ):(
-          <div className={styles.textNoTicket}>
-            <p>Você não possui tickets abertos</p>
+      <main className={styles.container}>
+        <div className={styles.header}>
+          <h1>Tickets</h1>
+          <br />
+        </div>
+        <div className={styles.content}>
+          <div className={styles.leftArea}>
+            <div className={styles.componentsLeft}>
+              <div className={styles.buttonArea}>
+                <button className={styles.buttonAddTicket}><FaPlusCircle /> Novo Ticket</button>
+              </div>
+              <div>
+                <strong><FaFilter /> Filtros</strong><br />
+                <div className={styles.search}>
+                  <input type="text" placeholder="Buscar" />
+                </div>
+              </div>
+            </div>
           </div>
-        )
-        
-        }
+          <div className={styles.ticketsArea}>
+            {tickets.length > 0 ? (
+              tickets.map(tkt => {
+                return (
+                  <TicketItem key={tkt.id} status={tkt.status.name} user={`${tkt.requester.name} ${tkt.requester.surname} (${tkt.requester.email})`} company={tkt.company.name} code={tkt.id} title={tkt.title} category={tkt.category.name} opendate={tkt.created_at} />
+                )
+              })
+            ) : (
+              <div className={styles.textNoneTicket}>
+                <p>Não foram encontrados tickets</p>
+              </div>
+            )
 
+            }
+          </div>
+        </div>
       </main>
 
     </>
@@ -100,20 +118,20 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const apiClient = clientAPIRequest(ctx)
 
-  const {data} = await apiClient.get('/ticket');
+  const { data } = await apiClient.get('/ticket');
 
-  const ticketList = data.map(ticket=>{
-    return{
+  const ticketList = data.map(ticket => {
+    return {
       id: ticket.id,
       title: ticket.title,
       description: ticket.description,
-      created_at: format(parseISO(ticket.created_at), 'dd MMM yyyy HH:mm',{locale:ptBR}),
+      created_at: format(parseISO(ticket.created_at), 'dd MMM yyyy HH:mm', { locale: ptBR }),
       requester: ticket.requester,
-      status:ticket.status,
-      company:ticket.company,
-      category:ticket.category
+      status: ticket.status,
+      company: ticket.company,
+      category: ticket.category
     }
-    
+
   })
 
 
@@ -121,7 +139,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      tickets:ticketList
+      tickets: ticketList
     }
   }
 }
