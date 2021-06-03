@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from 'next/link'
 import { GetServerSideProps, GetStaticProps, NextPageContext } from "next";
 import { TicketItem } from "../../components/ticketItem";
 import { useAuth } from "../../contexts/AuthContext";
@@ -56,10 +57,9 @@ export default function TicketList({ tickets }: TicketListPros) {
       <Head>
         <title>WA Suporte - Tickets</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta name="copyright" content="HAILE" />
+        <meta name="copyright" content="WA" />
         <meta name="language" content="PT-BR" />
         <meta name="author" content="matheuspereiradev, matheuslima20111997@gmail.com" />
-        <meta name="keywords" content="imoveis,imóveis,casa,comprar,haile,corretor,corretores,apartamentos,aluguel,arrendatar,casas" />
       </Head>
       <main className={styles.container}>
         <div className={styles.header}>
@@ -70,7 +70,9 @@ export default function TicketList({ tickets }: TicketListPros) {
           <div className={styles.leftArea}>
             <div className={styles.componentsLeft}>
               <div className={styles.buttonArea}>
-                <button className={styles.buttonAddTicket}><FaPlusCircle /> Novo Ticket</button>
+                <Link href="/ticket/novo">
+                  <button className={styles.buttonAddTicket}><FaPlusCircle /> Novo Ticket</button>
+                </Link>
               </div>
               <div>
                 <strong><FaFilter /> Filtros</strong><br />

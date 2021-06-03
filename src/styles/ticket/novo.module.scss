@@ -1,0 +1,67 @@
+.container {
+    width: 100%;
+    padding: 0rem 1rem;
+
+    h1 {
+        font-weight: 800;
+        align-items: center;
+        text-align: center;
+    }
+
+    .content {
+        margin: 4rem;
+        color: var(--black);
+
+        input {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            width: 100%;
+            height: 2.6rem;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            border: 1px solid var(--light-border);
+        }
+
+        textarea {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            resize: vertical;
+            padding: 1rem;
+            width: 100%;
+            border: 1px solid var(--light-border);
+            border-radius: 0.5rem;
+            outline: none;
+        }
+
+        .buttonArea {
+
+            align-items: center;
+            text-align: center;
+            padding-bottom: 1rem;
+
+            .buttonSaveTicket {
+                width: 13rem;
+                height: 3rem;
+                padding: 0.9rem 0.7rem 0.9rem 0.7rem;
+                border-radius: 4rem;
+                border: var(--green-400) solid 1px;
+                text-decoration: none;
+                background-color: var(--green-400);
+                color: var(--white);
+                transition: background-color 0.3s;
+
+                &:hover {
+                    background-color: var(--green-500);
+                    border: var(--green-500) solid 1px;
+                    color: var(--white);
+                }
+
+            }
+        }
+
+
+    }
+
+
+
+}
