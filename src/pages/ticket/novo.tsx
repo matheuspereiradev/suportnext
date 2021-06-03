@@ -31,12 +31,13 @@ export default function TicketNew({ tickets }: TicketNewPros) {
                 <div className={styles.content}>
                     <form>
                         <label>Título:</label><br />
-                        <input placeholder="Título" maxLength={100}></input>
+                        <input placeholder="Título" maxLength={100} required></input>
                         <label >Descrição:</label><br />
                         <textarea
-                            id="name"
+                            id="description"
                             maxLength={1000}
                             rows={7}
+                            required
                         />
                         <div className={styles.buttonArea}>
                             <button className={styles.buttonSaveTicket}><FaCheckCircle /> Abrir Ticket</button>
