@@ -4,12 +4,21 @@ import { useAuth } from "../../contexts/AuthContext";
 
 export function Header() {
 
-  const { isLogged, user , handleLogout} = useAuth()
+  const { isLogged, user, handleLogout } = useAuth()
   return (
     <header className={styles.headerContainer}>
-      <Link href="/">
-        <img src="/logo.png" alt="WA logo" className={styles.logo}></img>
-      </Link>
+      {
+        isLogged ? (
+          <Link href="/ticket">
+            <img src="/logo.png" alt="WA logo" className={styles.logo}></img>
+          </Link>
+        ) : (
+          <Link href="/">
+            <img src="/logo.png" alt="WA logo" className={styles.logo}></img>
+          </Link >
+        )
+      }
+
 
       <ul className={styles.navLinks}>
 
@@ -17,7 +26,7 @@ export function Header() {
           isLogged ? (
             <>
               <div className={styles.userName}>{user.name}</div>
-              <button className={styles.withBorder} onClick={()=>handleLogout()}>
+              <button className={styles.withBorder} onClick={() => handleLogout()}>
                 Sair
             </button>
             </>
