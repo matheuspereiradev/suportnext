@@ -7,7 +7,8 @@ import { browserAPIRequest, clientAPIRequest } from '../../services/api';
 import { FaCheckCircle, FaSave } from "react-icons/fa";
 import { useForm } from 'react-hook-form';
 import { useState } from "react";
-import { SucessModal } from "../../components/sucessModal";
+import { Error } from "../../components/error";
+import Router from 'next/router'
 
 interface Company {
     id: number,
@@ -64,13 +65,11 @@ export default function TicketNew({ companies, categories }: TicketNewPros) {
                 </div>
                 <div className={styles.content}>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <label>Título:</label><strong className={styles.error}>{errors.title && (
-                            errors.title.message
-                        )}</strong><br />
+                        <label>Título:</label>
+                        <Error message={errors.title?.message}/><br />
                         <input type="text" placeholder="Título" {...register("title", { required: { value: true, message: "O campo título deve ter pelo menos 3 caracteres" }, minLength: { value: 3, message: "O campo título deve ter pelo menos 3 caracteres" }, maxLength: { value: 100, message: "O campo título deve ter menos de 100 caracteres" } })} />
-                        <label >Descrição:</label><strong className={styles.error}>{errors.description && (
-                            errors.description.message
-                        )}</strong><br />
+                        <label >Descrição:</label>
+                        <Error message={errors.description?.message}/><br/>
                         <textarea {...register("description", { required: { value: true, message: "O campo descrição deve ter pelo menos 3 caracteres" }, minLength: { value: 3, message: "O campo descrição deve ter pelo menos 3 caracteres" }, maxLength: { value: 1000, message: "O campo título deve ter no maximo 1000 caracteres" } })} maxLength={1000} rows={7} />
                         <label>Categoria:</label><strong className={styles.error}>{errors.category && (
                             errors.category.message
@@ -100,11 +99,11 @@ export default function TicketNew({ companies, categories }: TicketNewPros) {
                         </select>
                         <div className={styles.buttonArea}>
                             <input type="submit" className={styles.buttonSaveTicket} value="Abrir ticket" ></input>
+                            <input type="button" className={styles.buttonCancelTicket} value="X" onClick={()=>{Router.push('/ticket')}}/>
                         </div>
 
                     </form>
                 </div>
-                <SucessModal isOpen={isOpen} message={message} link="" />
 
             </main>
 
