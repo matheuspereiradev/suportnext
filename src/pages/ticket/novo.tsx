@@ -3,16 +3,43 @@ import { GetServerSideProps } from "next";
 import { useAuth } from "../../contexts/AuthContext";
 import styles from "../../styles/ticket/novo.module.scss";
 import { parseCookies } from 'nookies';
-import { clientAPIRequest } from '../../services/api';
+import { browserAPIRequest, clientAPIRequest } from '../../services/api';
 import { FaCheckCircle, FaSave } from "react-icons/fa";
+import { useForm } from 'react-hook-form';
 
-interface TicketNewPros {
-    tickets: string
+interface Company {
+    id: number,
+    name: string,
 }
 
-export default function TicketNew({ tickets }: TicketNewPros) {
+interface Category {
+    id: number,
+    name: string,
+}
+
+interface TicketNewPros {
+    companies: Array<Company>,
+    categories: Array<Category>
+
+}
+
+type FormData = {
+    title: string;
+    description: string;
+    category: number;
+    company: number;
+};
+
+export default function TicketNew({ companies, categories }: TicketNewPros) {
 
     const { user } = useAuth();
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+    // const onSubmit = data => console.log(data);
+    const onSubmit = handleSubmit(async (data) => {
+        const api = await browserAPIRequest.post('/ticket',data);
+        console.log(api)
+    });
+    console.log(errors);
 
     return (
         <>
@@ -29,22 +56,38 @@ export default function TicketNew({ tickets }: TicketNewPros) {
                     <br />
                 </div>
                 <div className={styles.content}>
-                    <form>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <label>Título:</label><br />
-                        <input placeholder="Título" maxLength={100} required></input>
+                        <input type="text" placeholder="Título" {...register("title", { required: true, min: 3, maxLength: 100 })} />
                         <label >Descrição:</label><br />
-                        <textarea
-                            id="description"
-                            maxLength={1000}
-                            rows={7}
-                            required
-                        />
+                        <textarea {...register("description", { required: true, min: 3, maxLength: 1000 })} maxLength={1000} rows={7} />
+                        <label>Categoria:</label><br />
+                        <select {...register("category", { required: true })}>
+                            {
+                                categories && (
+                                    categories.map(cat => {
+                                        return (<option value={cat.id} key={cat.id}>{cat.name}</option>)
+                                    })
+                                )
+                            }
+
+                        </select><br />
+                        <label>Empresa:</label><br />
+                        <select {...register("company", { required: true })}>
+                            {
+                                companies && (
+                                    companies.map(com => {
+                                        return (<option value={com.id} key={com.id}>{com.name}</option>)
+                                    })
+                                )
+
+                            }
+                        </select>
                         <div className={styles.buttonArea}>
-                            <button className={styles.buttonSaveTicket}><FaCheckCircle /> Abrir Ticket</button>
+                            <input type="submit" className={styles.buttonSaveTicket} value="Abrir ticket" ></input>
                         </div>
 
                     </form>
-
                 </div>
             </main>
 
@@ -68,14 +111,31 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
     const apiClient = clientAPIRequest(ctx)
 
+    const companyRequest = await apiClient.get('/company');
 
+    const companies = companyRequest.data.map(company => {
+        return {
+            id: company.id,
+            name: company.name
+        }
+    })
+
+    const categoryRequest = await apiClient.get('/ticket/category');
+
+    const categories = categoryRequest.data.map(category => {
+        return {
+            id: category.id,
+            name: category.name
+        }
+    })
 
 
 
 
     return {
         props: {
-
+            companies,
+            categories
         }
     }
 }

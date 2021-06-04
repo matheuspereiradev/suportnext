@@ -78,6 +78,10 @@ export default function TicketList({ tickets }: TicketListPros) {
                 <strong><FaFilter /> Filtros</strong><br />
                 <div className={styles.search}>
                   <input type="text" placeholder="Buscar" />
+                  <div className={styles.value}>
+                    <input type="checkbox" value="onlyMe" />
+                    <label>Somente meus tickets</label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -94,7 +98,6 @@ export default function TicketList({ tickets }: TicketListPros) {
                 <p>Não foram encontrados tickets</p>
               </div>
             )
-
             }
           </div>
         </div>
