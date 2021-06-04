@@ -12,6 +12,10 @@
         margin: 2rem;
         color: var(--black);
 
+        .error{
+            color: crimson;
+        }
+
         input[type=text]  {
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;

@@ -6,6 +6,8 @@ import { parseCookies } from 'nookies';
 import { browserAPIRequest, clientAPIRequest } from '../../services/api';
 import { FaCheckCircle, FaSave } from "react-icons/fa";
 import { useForm } from 'react-hook-form';
+import { useState } from "react";
+import { SucessModal } from "../../components/sucessModal";
 
 interface Company {
     id: number,
@@ -32,12 +34,17 @@ type FormData = {
 
 export default function TicketNew({ companies, categories }: TicketNewPros) {
 
+    const [isOpen, setIsOpen] = useState(false)
+    const [message, setMessage] = useState('aaaaaaa')
+
     const { user } = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     // const onSubmit = data => console.log(data);
     const onSubmit = handleSubmit(async (data) => {
-        const api = await browserAPIRequest.post('/ticket',data);
-        console.log(api)
+        //const api = await browserAPIRequest.post('/ticket',data);
+        //console.log(api)
+        setIsOpen(true)
+        console.log(isOpen)
     });
     console.log(errors);
 
@@ -57,12 +64,18 @@ export default function TicketNew({ companies, categories }: TicketNewPros) {
                 </div>
                 <div className={styles.content}>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <label>Título:</label><br />
-                        <input type="text" placeholder="Título" {...register("title", { required: true, min: 3, maxLength: 100 })} />
-                        <label >Descrição:</label><br />
-                        <textarea {...register("description", { required: true, min: 3, maxLength: 1000 })} maxLength={1000} rows={7} />
-                        <label>Categoria:</label><br />
-                        <select {...register("category", { required: true })}>
+                        <label>Título:</label><strong className={styles.error}>{errors.title && (
+                            errors.title.message
+                        )}</strong><br />
+                        <input type="text" placeholder="Título" {...register("title", { required: { value: true, message: "O campo título deve ter pelo menos 3 caracteres" }, minLength: { value: 3, message: "O campo título deve ter pelo menos 3 caracteres" }, maxLength: { value: 100, message: "O campo título deve ter menos de 100 caracteres" } })} />
+                        <label >Descrição:</label><strong className={styles.error}>{errors.description && (
+                            errors.description.message
+                        )}</strong><br />
+                        <textarea {...register("description", { required: { value: true, message: "O campo descrição deve ter pelo menos 3 caracteres" }, minLength: { value: 3, message: "O campo descrição deve ter pelo menos 3 caracteres" }, maxLength: { value: 1000, message: "O campo título deve ter no maximo 1000 caracteres" } })} maxLength={1000} rows={7} />
+                        <label>Categoria:</label><strong className={styles.error}>{errors.category && (
+                            errors.category.message
+                        )}</strong><br />
+                        <select {...register("category", { required: { value: true, message: "É necessário selecionar uma categoria" } })}>
                             {
                                 categories && (
                                     categories.map(cat => {
@@ -72,8 +85,10 @@ export default function TicketNew({ companies, categories }: TicketNewPros) {
                             }
 
                         </select><br />
-                        <label>Empresa:</label><br />
-                        <select {...register("company", { required: true })}>
+                        <label>Empresa:</label><strong className={styles.error}>{errors.company && (
+                            errors.company.message
+                        )}</strong><br />
+                        <select {...register("company", { required: { value: true, message: "É necessário selecionar uma empresa" } })}>
                             {
                                 companies && (
                                     companies.map(com => {
@@ -89,6 +104,8 @@ export default function TicketNew({ companies, categories }: TicketNewPros) {
 
                     </form>
                 </div>
+                <SucessModal isOpen={isOpen} message={message} link="" />
+
             </main>
 
         </>

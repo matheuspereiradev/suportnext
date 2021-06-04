@@ -62,7 +62,7 @@ export default function TicketList({ tickets }: TicketListPros) {
         <meta name="author" content="matheuspereiradev, matheuslima20111997@gmail.com" />
       </Head>
       <main className={styles.container}>
-        <div className={styles.header}>
+        <div>
           <h1>Tickets</h1>
           <br />
         </div>
