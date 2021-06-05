@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { useState } from "react";
 import { Error } from "../../components/error";
 import Router from 'next/router'
+import { useToast } from "../../contexts/ToastContext";
 
 interface Company {
     id: number,
@@ -35,12 +36,18 @@ type FormData = {
 
 export default function TicketNew({ companies, categories }: TicketNewPros) {
 
-    const { user } = useAuth();
+    const { addToast } = useToast();
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     // const onSubmit = data => console.log(data);
     const onSubmit = handleSubmit(async (data) => {
-        const api = await browserAPIRequest.post('/ticket',data);
-        Router.push('/ticket')
+        try{
+            await browserAPIRequest.post('/ticket',data);
+            addToast({title:"Sucesso",description:"Ticket cadastrado com sucesso",type:"success"})
+            Router.push('/ticket');
+        }catch(e){
+            addToast({title:"Erro",description:"Erro ao cadastrar o ticket",type:"error"})
+        }
+        
     });
     console.log(errors);
 

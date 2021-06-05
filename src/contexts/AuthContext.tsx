@@ -55,6 +55,18 @@ export const AuthProvider = ({ children }: ChildrenProvider) => {
             addToast({description:"Email ou senha incorretos, verifique suas credenciais e tente novamente",title:"Erro na autenticação", type:"error"})
         }
 
+        // browserAPIRequest.post('session', { email, password }).then(response => {
+        //     console.log(response)
+        //     setUser(response.data.user)
+        //     browserAPIRequest.defaults.headers['authorization'] = `Bearer ${response.data.token}`;
+        //     setCookie(undefined, "suportewatoken", response.data.token, {
+        //         maxAge: 60 * 60 * 2 //2 hours
+        //     })
+        //     Router.push('/ticket')
+        // }).catch(err=>{
+        //     console.log(err)
+        //         addToast({ description: "Email ou senha incorretos, verifique suas credenciais e tente novamente", title: "Erro na autenticação", type: "error" })
+        // })
     }
 
     const handleLogout = () => {
