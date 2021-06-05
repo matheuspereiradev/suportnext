@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { FormEvent, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { useToast } from "../contexts/ToastContext";
 import styles from "../styles/login.module.scss"
 
 export default function Home() {
@@ -8,7 +9,7 @@ export default function Home() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const { handleLogin } = useAuth()
-
+    
     const sendFormLogin = (event: FormEvent)=>{
         event.preventDefault();
         handleLogin(email,password);

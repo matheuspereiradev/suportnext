@@ -35,17 +35,12 @@ type FormData = {
 
 export default function TicketNew({ companies, categories }: TicketNewPros) {
 
-    const [isOpen, setIsOpen] = useState(false)
-    const [message, setMessage] = useState('aaaaaaa')
-
     const { user } = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     // const onSubmit = data => console.log(data);
     const onSubmit = handleSubmit(async (data) => {
-        //const api = await browserAPIRequest.post('/ticket',data);
-        //console.log(api)
-        setIsOpen(true)
-        console.log(isOpen)
+        const api = await browserAPIRequest.post('/ticket',data);
+        Router.push('/ticket')
     });
     console.log(errors);
 
@@ -71,9 +66,8 @@ export default function TicketNew({ companies, categories }: TicketNewPros) {
                         <label >Descrição:</label>
                         <Error message={errors.description?.message}/><br/>
                         <textarea {...register("description", { required: { value: true, message: "O campo descrição deve ter pelo menos 3 caracteres" }, minLength: { value: 3, message: "O campo descrição deve ter pelo menos 3 caracteres" }, maxLength: { value: 1000, message: "O campo título deve ter no maximo 1000 caracteres" } })} maxLength={1000} rows={7} />
-                        <label>Categoria:</label><strong className={styles.error}>{errors.category && (
-                            errors.category.message
-                        )}</strong><br />
+                        <label>Categoria:</label>
+                        <Error message={errors.category?.message}/><br/>
                         <select {...register("category", { required: { value: true, message: "É necessário selecionar uma categoria" } })}>
                             {
                                 categories && (
@@ -84,9 +78,8 @@ export default function TicketNew({ companies, categories }: TicketNewPros) {
                             }
 
                         </select><br />
-                        <label>Empresa:</label><strong className={styles.error}>{errors.company && (
-                            errors.company.message
-                        )}</strong><br />
+                        <label>Empresa:</label>
+                        <Error message={errors.company?.message}/><br/>
                         <select {...register("company", { required: { value: true, message: "É necessário selecionar uma empresa" } })}>
                             {
                                 companies && (

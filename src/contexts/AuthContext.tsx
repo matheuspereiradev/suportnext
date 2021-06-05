@@ -1,71 +1,75 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import {browserAPIRequest} from'../services/api'
-import {setCookie,parseCookies,destroyCookie} from 'nookies'
+import { browserAPIRequest } from '../services/api'
+import { setCookie, parseCookies, destroyCookie } from 'nookies'
 import Router from 'next/router'
+import ChildrenProvider from './ChidreanProvider';
+import { useToast } from './ToastContext';
 
-interface User{
+interface User {
     id: string,
     name: string,
-    surname:string,
-    email:string,
-    idCompany:number,
-    isAdmin:boolean,
-    gender:string
+    surname: string,
+    email: string,
+    idCompany: number,
+    isAdmin: boolean,
+    gender: string
 }
 
-interface AuthContextData{
+interface AuthContextData {
     user: User,
-    isLogged:boolean,
-    handleLogin:(email:string,password:string)=>Promise<void>,
-    handleLogout:()=>void
+    isLogged: boolean,
+    handleLogin: (email: string, password: string) => Promise<void>,
+    handleLogout: () => void
 }
 
-interface ChildrenProvider{
-    children:ReactNode
-}
 
 export const AuthContext = createContext({} as AuthContextData)
 
 
-export const AuthProvider = ({children}:ChildrenProvider) => {
+export const AuthProvider = ({ children }: ChildrenProvider) => {
 
-    const [user, setUser] = useState<User|undefined>(undefined)
-    const isLogged = !!user
+    const [user, setUser] = useState<User | undefined>(undefined);
+    const isLogged = !!user;
+    const {addToast} = useToast();
 
-    useEffect(()=>{
-        const {'suportewatoken':token} = parseCookies();
+    useEffect(() => {
+        const { 'suportewatoken': token } = parseCookies();
 
-        if(token){
-            browserAPIRequest.get(`/session/${token}`).then(response=>{
+        if (token) {
+            browserAPIRequest.get(`/session/${token}`).then(response => {
                 setUser(response.data.user)
             })
         }
-    },[])
+    }, [])
 
-    const handleLogin = async (email:string,password:string) =>{
+    const handleLogin = async (email: string, password: string) => {
+        try {
+            const { data } = await browserAPIRequest.post('session', { email, password })
+            setUser(data.user)
+            browserAPIRequest.defaults.headers['authorization'] = `Bearer ${data.token}`;
+            setCookie(undefined, "suportewatoken", data.token, {
+                maxAge: 60 * 60 * 2 //2 hours
+            })
+            Router.push('/ticket')
+        } catch (e) {
+            addToast({description:"Email ou senha incorretos, verifique suas credenciais e tente novamente",title:"Erro na autenticação", type:"error"})
+        }
 
-        const {data} = await browserAPIRequest.post('session',{email,password})
-        setUser(data.user)
-        browserAPIRequest.defaults.headers['authorization'] = `Bearer ${data.token}`;
-        setCookie(undefined,"suportewatoken",data.token,{
-            maxAge: 60 * 60 * 2 //2 hours
-        })
-        Router.push('/ticket')
     }
 
-    const handleLogout = ()=>{
-        destroyCookie(undefined,"suportewatoken")
+    const handleLogout = () => {
+        destroyCookie(undefined, "suportewatoken")
         setUser(undefined)
         browserAPIRequest.defaults.headers['authorization'] = '';
         Router.push('/')
     }
 
     return (
-        <AuthContext.Provider value={{user,isLogged,handleLogin,handleLogout}}>
+        <AuthContext.Provider value={{ user, isLogged, handleLogin, handleLogout }}>
             {children}
         </AuthContext.Provider>
     )
-    
+
 }
 
 export const useAuth = () => useContext(AuthContext)

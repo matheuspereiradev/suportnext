@@ -1,0 +1,49 @@
+.toastArea {
+    position: absolute;
+        right: 1rem;
+        bottom: 2rem;
+        
+        width: 25rem;
+        overflow: hidden;
+        z-index: 100;
+
+    .toast {
+        margin: 0.3rem .0rem;
+        color: var(--white);
+        //background: var(--error);
+        padding: 1rem;
+        display: flex;
+        border-radius: 1rem;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+
+        align-items: center;
+
+        .container {
+            position: relative;
+            padding-right: 2rem;
+            text-align: justify;
+
+            .message {
+                font-size: 0.9rem;
+                margin-top: 0.5rem;
+            }
+
+            .title {
+
+                font-size: 1rem;
+                font-weight: 600;
+            }
+        }
+
+        button {
+            position: absolute;
+            font-weight: 900;
+            font-size: 1.5rem;
+            background: transparent;
+
+            border: 0;
+            color: inherit;
+            right: .4rem;
+        }
+    }
+}
