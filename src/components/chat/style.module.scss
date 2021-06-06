@@ -1,24 +1,79 @@
-.chatContainer{
-    background-color: white;
-    padding: 1rem;
-    margin:1rem 2rem;
-    border: 1px solid var(--light-border);
-    border-radius: 1rem;
-    min-height: 30vh;
+.chat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: #abcabc;
 
-    .description{
-        margin-bottom: .3rem;
+    .msger {
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 867px;
+        margin: 25px 10px;
+        height: calc(100% - 50px);
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
+        display: flex;
 
-        .hour{
-            float: right;
-            font-size: .8rem;
+        .msgerChat {
+            width: 100%;
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #fcfcfe;
+            color: black;
+
+            &::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: #ddd;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: #bdbdbd;
+            }
+
             
         }
-    }
 
-    .chat{
-        margin: 1rem;
-        
+        .inputTextArea {
+            display: flex;
+            padding: 10px;
+            border-top: var(--border);
+            background: #eee;
+        }
+
+        .inputTextArea * {
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            font-size: 1em;
+        }
+
+        .msgInput {
+            flex: 1;
+            background: #ddd;
+        }
+
+        .msgSendButton {
+            margin-left: 10px;
+            background: rgb(0, 196, 65);
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.23s;
+
+            &:hover {
+                background: rgb(0, 180, 50);
+            }
+        }
+
+
     }
-    
 }
