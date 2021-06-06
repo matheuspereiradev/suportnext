@@ -1,23 +1,44 @@
 .rightMsg {
     display: flex;
     flex-direction: row-reverse;
-    margin-bottom: .2rem;
+    margin-bottom: .3rem;
     
     .msgBubble {
         border: 2px solid var(--light-border);
         min-width: 40%;
         max-width: 80%;
         background-color: #E1FFC7;
-        box-shadow: 1px 1px 16px 3px rgba(0, 0, 0, .2);
+        box-shadow: 1px 1px 6px 1px rgba(0, 0, 0, .2);
         padding: .8rem;
         border-radius: 1rem;
         border-bottom-right-radius: 0;
+        font-size: .9rem;
+
+        p{
+            padding: .4rem 0rem;
+        }
+
+        .trash {
+            color: var(--light-red-300);
+            float: right;
+            background: transparent;
+            border: none;
+            float: right;
+            padding: .2rem;
+            font-size: 1rem;
+    
+            &:hover {
+                background-color: #d1ecb9;
+                border-radius: .4rem;
+                color: var(--red-500);
+                ;
+            }
+        }
 
         .autor {
             font-size: .8rem;
             font-weight: 600;
             color: black;
-            padding-bottom: .5rem;
         }
 
         .hour {

@@ -32,7 +32,7 @@ export function ReceivedChat({ id, text, file, sender, created_at }: ChatProps) 
                         </>
                     )
                 }
-                <span className={styles.hour}>{`data${created_at}`}</span>
+                <span className={styles.hour}>{created_at}</span>
             </div>
         </div>
     );

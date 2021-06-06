@@ -37,18 +37,47 @@ export function Chat({ messages, openDate, description }: InteractionProps) {
         <section className={styles.chat}>
             <div className={styles.msger}>
                 <div className={styles.msgerChat}>
-                    <SendedChat text="aaaaaaaaaaaaaaa" sender="joamo" id="" file="aaaaa" created_at={new Date}/>
-                    <ReceivedChat text="aaaaaaaaaaaaaaa" sender="jorge" id="" file="" created_at={new Date}/>
-                    <SendedChat text="" sender="" id="" file="" created_at={new Date}/>
-                    <ReceivedChat text="aaxxbbbaaaa" sender="as" id="" file="aaaaa" created_at={new Date}/>
-                    <SendedChat text="aaaaaaaaaaaaaaa" sender="joamo" id="" file="aaaaa" created_at={new Date}/>
-                    <ReceivedChat text="aaaaaaaaaaaaaaa" sender="jorge" id="" file="" created_at={new Date}/>
-                    <SendedChat text="" sender="" id="" file="" created_at={new Date}/>
-                    <ReceivedChat text="aaxxbbbaaaa" sender="as" id="" file="aaaaa" created_at={new Date}/>
-                    <SendedChat text="aaaaaaaaaaaaaaa" sender="joamo" id="" file="aaaaa" created_at={new Date}/>
-                    <ReceivedChat text="aaaaaaaaaaaaaaa" sender="jorge" id="" file="" created_at={new Date}/>
-                    <SendedChat text="" sender="" id="" file="" created_at={new Date}/>
-                    <ReceivedChat text="aaxxbbbaaaa" sender="as" id="" file="aaaaa" created_at={new Date}/>
+                    {
+                        user &&(
+                            messages.map(ev => {
+                                if(user.id===ev.sender.id){
+                                    return (
+                                        <SendedChat
+                                            text={ev.text}
+                                            sender={`${ev.sender.name} ${ev.sender.surname}(${ev.sender.email})`}
+                                            id={ev.id}
+                                            file={ev.file}
+                                            created_at={ev.created_at}
+                                            key={ev.id}
+                                        />
+                                    )
+                                }else{
+                                    return (
+                                        <ReceivedChat
+                                            text={ev.text}
+                                            sender={`${ev.sender.name} ${ev.sender.surname}(${ev.sender.email})`}
+                                            id={ev.id}
+                                            file={ev.file}
+                                            created_at={ev.created_at}
+                                            key={ev.id}
+                                        />
+                                    )
+                                }
+                            })
+                        )
+                    }
+
+                    {/* <ReceivedChat text="aaaaaaaaaaaaaaa" sender="jorge" id="" file="" created_at={new Date} />
+                    <SendedChat text="" sender="" id="" file="" created_at={new Date} />
+                    <ReceivedChat text="aaxxbbbaaaa" sender="as" id="" file="aaaaa" created_at={new Date} />
+                    <SendedChat text="aaaaaaaaaaaaaaa" sender="joamo" id="" file="aaaaa" created_at={new Date} />
+                    <ReceivedChat text="aaaaaaaaaaaaaaa" sender="jorge" id="" file="" created_at={new Date} />
+                    <SendedChat text="" sender="" id="" file="" created_at={new Date} />
+                    <ReceivedChat text="aaxxbbbaaaa" sender="as" id="" file="aaaaa" created_at={new Date} />
+                    <SendedChat text="aaaaaaaaaaaaaaa" sender="joamo" id="" file="aaaaa" created_at={new Date} />
+                    <ReceivedChat text="aaaaaaaaaaaaaaa" sender="jorge" id="" file="" created_at={new Date} />
+                    <SendedChat text="" sender="" id="" file="" created_at={new Date} />
+                    <ReceivedChat text="aaxxbbbaaaa" sender="as" id="" file="aaaaa" created_at={new Date} /> */}
                 </div>
                 <form className={styles.inputTextArea}>
                     <input type="text" className={styles.msgInput} placeholder="Digite sua mensagem..." />

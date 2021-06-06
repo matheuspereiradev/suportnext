@@ -13,10 +13,15 @@ interface ChatProps {
 
 export function SendedChat({ id, text, file, sender, created_at }: ChatProps) {
 
+    function deleteChat(id:string){
+
+    }
+    
     return (
         <div className={styles.rightMsg}>
             <div className={styles.msgBubble}>
                 <span className={styles.autor}>{sender}</span>
+                <button className={styles.trash} onClick={()=>{deleteChat(id)}}><FaTrash /></button>
                 <p>{text}</p>
                 {
                     file && (
@@ -27,7 +32,7 @@ export function SendedChat({ id, text, file, sender, created_at }: ChatProps) {
                         </>
                     )
                 }
-                 <span className={styles.hour}>{`data${created_at}`}</span>
+                 <span className={styles.hour}>{created_at}</span>
             </div>
         </div>
     );

@@ -37,17 +37,10 @@ export const AuthProvider = ({ children }: ChildrenProvider) => {
 
         if (token) {
             browserAPIRequest.get(`/session/${token}`).then(response => {
-
-                setTimeout(()=>{
                     const usr=response.data.user;
                     setUser(usr)
                     setIsLogged(true)
-                    console.log(isLogged)
-                    console.log(usr)
-                    console.log(user)
-
-                },5000)
-                
+                    
             })
         }
     }, [])
