@@ -1,0 +1,44 @@
+.container {
+
+    width: 100%;
+    padding: 0rem 1rem;
+    padding-bottom: 2rem;
+
+    h1 {
+        font-weight: 800;
+        align-items: center;
+        text-align: center;
+    }
+
+    hr{
+        background-color: var(--light-border);
+        margin: 1rem;
+    }
+
+
+    .content {
+
+        .details{
+            
+            span{
+                margin-right: 1rem;
+            }
+            img{
+                width: 1rem;
+                margin-left: .5rem;
+            }
+        }
+
+        .title{
+            margin-bottom: 1.5rem;
+            h2{
+                font-weight: 800;
+                align-items: center;
+                text-align: center;
+            }
+
+        }
+    }
+
+}
+

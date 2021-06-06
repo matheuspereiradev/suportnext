@@ -8,11 +8,12 @@ import { parseCookies } from 'nookies';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from "date-fns/locale";
 import { clientAPIRequest } from '../../services/api';
-import { FaFilter, FaPlusCircle } from 'react-icons/fa'
+import { FaFilter, FaPlusCircle } from 'react-icons/fa';
 
 interface Status {
   id: number,
   name: string,
+  icon: string
 }
 
 interface Company {
@@ -90,7 +91,7 @@ export default function TicketList({ tickets }: TicketListPros) {
             {tickets.length > 0 ? (
               tickets.map(tkt => {
                 return (
-                  <TicketItem key={tkt.id} idStatus={tkt.status.id} status={tkt.status.name} user={`${tkt.requester.name} ${tkt.requester.surname} (${tkt.requester.email})`} company={tkt.company.name} code={tkt.id} title={tkt.title} category={tkt.category.name} opendate={tkt.created_at} />
+                  <TicketItem key={tkt.id} icon={tkt.status.icon} status={tkt.status.name} user={`${tkt.requester.name} ${tkt.requester.surname} (${tkt.requester.email})`} company={tkt.company.name} code={tkt.id} title={tkt.title} category={tkt.category.name} opendate={tkt.created_at} />
                 )
               })
             ) : (
