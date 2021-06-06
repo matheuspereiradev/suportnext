@@ -1,0 +1,24 @@
+.chatContainer{
+    background-color: white;
+    padding: 1rem;
+    margin:1rem 2rem;
+    border: 1px solid var(--light-border);
+    border-radius: 1rem;
+    min-height: 30vh;
+
+    .description{
+        margin-bottom: .3rem;
+
+        .hour{
+            float: right;
+            font-size: .8rem;
+            
+        }
+    }
+
+    .chat{
+        margin: 1rem;
+        
+    }
+    
+}

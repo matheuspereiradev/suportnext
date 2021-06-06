@@ -29,7 +29,7 @@ export const AuthContext = createContext({} as AuthContextData)
 export const AuthProvider = ({ children }: ChildrenProvider) => {
 
     const [user, setUser] = useState<User | undefined>(undefined);
-    const isLogged = !!user;
+    const [isLogged,setIsLogged] = useState<boolean>(false);
     const {addToast} = useToast();
 
     useEffect(() => {
@@ -37,7 +37,17 @@ export const AuthProvider = ({ children }: ChildrenProvider) => {
 
         if (token) {
             browserAPIRequest.get(`/session/${token}`).then(response => {
-                setUser(response.data.user)
+
+                setTimeout(()=>{
+                    const usr=response.data.user;
+                    setUser(usr)
+                    setIsLogged(true)
+                    console.log(isLogged)
+                    console.log(usr)
+                    console.log(user)
+
+                },5000)
+                
             })
         }
     }, [])
@@ -46,6 +56,7 @@ export const AuthProvider = ({ children }: ChildrenProvider) => {
         try {
             const { data } = await browserAPIRequest.post('session', { email, password })
             setUser(data.user)
+            setIsLogged(true)
             browserAPIRequest.defaults.headers['authorization'] = `Bearer ${data.token}`;
             setCookie(undefined, "suportewatoken", data.token, {
                 maxAge: 60 * 60 * 2 //2 hours
@@ -72,6 +83,7 @@ export const AuthProvider = ({ children }: ChildrenProvider) => {
     const handleLogout = () => {
         destroyCookie(undefined, "suportewatoken")
         setUser(undefined)
+        setIsLogged(false)
         browserAPIRequest.defaults.headers['authorization'] = '';
         Router.push('/')
     }
