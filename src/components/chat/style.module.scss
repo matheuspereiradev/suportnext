@@ -2,11 +2,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 85vh;
+    height: 100vh;
     background-image: #abcabc;
 
     .msger {
-        display: flex;
         flex-flow: column wrap;
         justify-content: space-between;
         width: 100%;
@@ -14,10 +13,19 @@
         margin: 25px 10px;
         height: calc(100% - 50px);
         border: 2px solid #ddd;
-        border-radius: 5px;
+        border-radius: .5rem;
         background: white;
         box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
         display: flex;
+
+        .description {
+            background-color: var(--gray-200);
+            border: 2px solid #ddd;
+            border-top-left-radius: .5rem;
+            border-top-right-radius: .5rem;
+            padding: 1rem;
+            color: black;
+        }
 
         .msgerChat {
             width: 100%;
@@ -39,18 +47,86 @@
                 background: #bdbdbd;
             }
 
-            
+
         }
 
         .inputTextArea {
             display: flex;
-            padding: 10px;
+            padding: .7rem;
             border-top: var(--border);
             background: #eee;
+
+            .privateSwitch {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .privateSwitch {
+                    font-size: .8rem;
+                }
+
+                .switch {
+                    position: relative;
+                    display: inline-block;
+                    width: 3.4rem;
+                    height: 1rem;
+
+                    input {
+                        opacity: 0;
+                        width: 0;
+                        height: 0;
+                    }
+
+                    .slider {
+                        position: absolute;
+                        cursor: pointer;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background-color: #ccc;
+                        -webkit-transition: .4s;
+                        transition: .4s;
+                        border-radius: 1rem;
+
+                        &:before {
+                            border-radius: 50%;
+                            position: absolute;
+                            content: "";
+                            height: 1rem;
+                            width: 1rem;
+                            left: 0.2rem;
+                            bottom: 0.2rem;
+                            background-color: white;
+                            -webkit-transition: .4s;
+                            transition: .4s;
+                        }
+                    }
+
+
+                    input:checked+.slider {
+                        background-color: #2196F3;
+                    }
+
+                    input:focus+.slider {
+                        box-shadow: 0 0 0.2rem #2196F3;
+                    }
+
+                    input:checked+.slider:before {
+                        -webkit-transform: translateX(1rem);
+                        -ms-transform: translateX(1rem);
+                        transform: translateX(1rem);
+                    }
+
+
+                }
+            }
+
+
         }
 
         .inputTextArea * {
-            padding: 10px;
+            padding: .7rem;
             border: none;
             border-radius: 3px;
             font-size: 1em;
@@ -61,19 +137,20 @@
             background: #ddd;
         }
 
-        .msgSendButton {
-            margin-left: 10px;
-            background: rgb(0, 196, 65);
-            color: #fff;
-            font-weight: bold;
+        .msgSendButton{
+            border-radius: .4rem;
+            border: #00c441 solid 1px;
+            text-decoration: none;
+            background: #00c441;
+            color: var(--white);
+            transition: background-color 0.3s;
             cursor: pointer;
-            transition: background 0.23s;
-
             &:hover {
-                background: rgb(0, 180, 50);
+                background-color: #00b432;
+                color: var(--white);
             }
-        }
 
+        }
 
     }
 }

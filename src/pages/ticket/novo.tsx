@@ -41,9 +41,9 @@ export default function TicketNew({ companies, categories }: TicketNewPros) {
     // const onSubmit = data => console.log(data);
     const onSubmit = handleSubmit(async (data) => {
         try{
-            await browserAPIRequest.post('/ticket',data);
+            const res = await browserAPIRequest.post('/ticket',data);
             addToast({title:"Sucesso",description:"Ticket cadastrado com sucesso",type:"success"})
-            Router.push('/ticket');
+            Router.push(`/ticket/${res.data.id}`);
         }catch(e){
             addToast({title:"Erro",description:"Erro ao cadastrar o ticket",type:"error"})
         }

@@ -4,34 +4,58 @@
     padding: 0rem 1rem;
     padding-bottom: 2rem;
 
-    h1 {
-        font-weight: 800;
-        align-items: center;
-        text-align: center;
-    }
+    .header {
 
-    hr{
-        background-color: var(--light-border);
-        margin: 1rem;
+        h1 {
+            font-weight: 800;
+            align-items: center;
+            text-align: center;
+        }
+
+        hr {
+            background-color: var(--light-border);
+            margin: 1rem;
+        }
+
+        .cancelButton {
+            height: 3rem;
+            padding: 0.9rem 0.7rem 0.9rem 0.7rem;
+            border-radius: 4rem;
+            border: var(--red) solid 1px;
+            text-decoration: none;
+            color: var(--white);
+            transition: background-color 0.3s;
+            background-color: var(--red);
+
+            &:hover {
+                background-color: var(--light-red-300);
+                color: var(--white);
+            }
+        }
     }
 
 
     .content {
 
-        .details{
-            
-            span{
+
+        .details {
+
+            span {
                 margin-right: 1rem;
             }
-            img{
+
+            img {
                 width: 1rem;
                 margin-left: .5rem;
             }
+
+            
         }
 
-        .title{
+        .title {
             margin-bottom: 1.5rem;
-            h2{
+
+            h2 {
                 font-weight: 800;
                 align-items: center;
                 text-align: center;
@@ -41,4 +65,3 @@
     }
 
 }
-

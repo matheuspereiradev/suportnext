@@ -5,16 +5,31 @@ import styles from "../../styles/ticket/details.module.scss";
 import { parseCookies } from 'nookies';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from "date-fns/locale";
-import { clientAPIRequest } from '../../services/api';
+import { browserAPIRequest, clientAPIRequest } from '../../services/api';
 import { Chat } from "../../components/chat";
 import { Ticket } from "../../interfaces/Ticket";
 import { InteractionProvider } from "../../contexts/InteractionContext";
+import { useToast } from "../../contexts/ToastContext";
+import Router from 'next/router'
 
 interface props {
     ticket: Ticket
 }
 
-export default function TicketList({ ticket }: props) {
+export default function TicketDetails({ ticket }: props) {
+
+    const {addToast} = useToast();
+    const {user} = useAuth();
+
+    const cancelTicket = async (id: string) => {
+        try {
+            await browserAPIRequest.delete(`/ticket/${ticket.id}`);
+            addToast({ title: "Sucesso", description: "Ticket cancelado com sucesso", type: "info" })
+            Router.push('/ticket');
+        } catch (e) {
+            addToast({ title: "Erro", description: "Erro ao cancelar o ticket", type: "error" })
+        }
+    }
 
     return (
         <>
@@ -26,8 +41,8 @@ export default function TicketList({ ticket }: props) {
                 <meta name="author" content="matheuspereiradev, matheuslima20111997@gmail.com" />
             </Head>
             <main className={styles.container}>
-                <div>
-                    <h1>Detalhes do Ticket (<strong className={styles.idArea}><img src={`/${ticket.status.icon}`} />#{ticket.id}</strong>)</h1>
+                <div className={styles.header}>
+                    <h1>Detalhes do Ticket (<strong className={styles.idArea}><img src={`/${ticket.status.icon}`} />#{ticket.id}</strong>) {((user?.id===ticket.requester.id)&&(<button className={styles.cancelButton} onClick={() => { cancelTicket(ticket.id) }}>Cancelar</button>))}</h1>
                     <hr />
                     <br />
                 </div>

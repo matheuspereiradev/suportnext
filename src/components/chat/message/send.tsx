@@ -12,18 +12,16 @@ interface ChatProps {
     sender: string
 }
 
-
-
 export function SendedChat({ id, text, file, sender, created_at }: ChatProps) {
 
     const {addToast} = useToast();
-    const {refreshInteractions} = useInteraction();
+    const {removeInteraction} = useInteraction();
 
     async function deleteChat(id:string){
         try{
             const res = await browserAPIRequest.delete(`/ticket/intaraction/${id}`);
             addToast({title:"Sucesso",description:"Mensagem excluida",type:"info"});
-            refreshInteractions(res.data.idTicket)
+            removeInteraction(res.data.id)
         }catch(e){
             addToast({title:"Erro",description:"Erro ao excluir mensagem tente novamente",type:"error"})
         }

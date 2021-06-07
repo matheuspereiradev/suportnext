@@ -8,6 +8,7 @@ import { ptBR } from "date-fns/locale";
 interface InteractionContextData{
     refreshInteractions(id:number):Promise<void>;
     setInteractions(Interactions:Array<Interaction>):void;
+    removeInteraction(id:string):void;
     interactions:Interaction[];
 }
 
@@ -16,7 +17,11 @@ export const InteractionContext = createContext({} as InteractionContextData)
 
 export const InteractionProvider = ({children}:ChildrenProvider) => {
 
-    const [interactions,setInteractions] = useState<Array<Interaction>>([])    
+    const [interactions,setInteractions] = useState<Array<Interaction>>([]) 
+    
+    const removeInteraction = (id:string)=>{
+        setInteractions(state=>state.filter(msg => msg.id !== id))
+    }
 
     const refreshInteractions = async(id:number)=>{
         const { data } = await browserAPIRequest.get(`ticket/find/${id}`);
@@ -37,7 +42,7 @@ export const InteractionProvider = ({children}:ChildrenProvider) => {
     }
 
     return (
-        <InteractionContext.Provider value={{refreshInteractions,interactions,setInteractions}}>
+        <InteractionContext.Provider value={{refreshInteractions,interactions,setInteractions,removeInteraction}}>
             {children}
         </InteractionContext.Provider>
     )
