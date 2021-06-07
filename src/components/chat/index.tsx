@@ -56,6 +56,7 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
                 text: data.message,
                 file: "",
                 ticket: ticket,
+                isPrivate:data.isPrivate
             }
             await browserAPIRequest.post('/ticket/intaraction', formData);
             addToast({ title: "Sucesso", description: "Mensagem enviada", type: "success" });
