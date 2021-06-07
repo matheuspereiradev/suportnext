@@ -7,52 +7,8 @@ import { format, parseISO } from 'date-fns';
 import { ptBR } from "date-fns/locale";
 import { clientAPIRequest } from '../../services/api';
 import { Chat } from "../../components/chat";
-
-interface Interaction {
-    id: string,
-    text: string,
-    file: string,
-    idTicket: number,
-    isPrivate: boolean,
-    created_at: Date,
-    sender: User
-}
-
-interface Status {
-    id: number,
-    name: string,
-    icon: string
-}
-
-interface Company {
-    id: number,
-    name: string,
-}
-
-interface Category {
-    id: number,
-    name: string,
-}
-
-interface User {
-    id: string,
-    name: string,
-    surname: string,
-    email: string,
-    gender: string
-}
-
-interface Ticket {
-    id: string,
-    title: string,
-    description: string,
-    created_at: Date,
-    requester: User
-    status: Status,
-    company: Company,
-    category: Category,
-    interactions: Interaction[]
-}
+import { Ticket } from "../../interfaces/Ticket";
+import { InteractionProvider } from "../../contexts/InteractionContext";
 
 interface props {
     ticket: Ticket
@@ -85,7 +41,9 @@ export default function TicketList({ ticket }: props) {
                         <strong>Status:</strong><img src={`/${ticket.status.icon}`} /><span>{` ${ticket.status.name}`}</span>
                         <strong>Categoria:</strong><span>{` ${ticket.category.name}`}</span>
                         <strong>Aberto em:</strong><span>{` ${ticket.created_at}`}</span>
-                        <Chat openDate={ticket.created_at} description={ticket.description} messages={ticket.interactions} />
+                        <InteractionProvider>
+                            <Chat openDate={ticket.created_at} description={ticket.description} messages={ticket.interactions} ticket={ticket.id} />
+                        </InteractionProvider>
                     </div>
 
                 </div>

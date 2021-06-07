@@ -49,7 +49,6 @@ export default function TicketNew({ companies, categories }: TicketNewPros) {
         }
         
     });
-    console.log(errors);
 
     return (
         <>

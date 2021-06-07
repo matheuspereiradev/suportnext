@@ -1,10 +1,14 @@
 import styles from "./style.module.scss";
 import Link from 'next/link';
-import { useState } from "react";
-import { FaExclamationCircle } from "react-icons/fa";
+
+import { useEffect } from "react";
 import { ReceivedChat } from "./message/received";
 import { SendedChat } from "./message/send";
 import { useAuth } from "../../contexts/AuthContext";
+import { browserAPIRequest, clientAPIRequest } from "../../services/api";
+import { useForm } from 'react-hook-form';
+import { useToast } from "../../contexts/ToastContext";
+import { useInteraction } from "../../contexts/InteractionContext";
 
 interface Interaction {
     id: string,
@@ -27,11 +31,46 @@ interface User {
 interface InteractionProps {
     messages: Interaction[],
     description: string,
-    openDate: Date
+    openDate: Date,
+    ticket:string
 }
 
-export function Chat({ messages, openDate, description }: InteractionProps) {
-    const { user, isLogged } = useAuth()
+interface SendMessageProps{
+    message:string,
+    file:string,
+    status:number
+}
+
+export function Chat({messages , openDate, description, ticket }: InteractionProps) {
+ 
+    const {interactions,refreshInteractions,setInteractions} = useInteraction();
+    const { user } = useAuth();
+    const {addToast} = useToast();
+
+    const { register, handleSubmit,setValue, formState: { errors } } = useForm();
+
+    const onSubmit = handleSubmit(async (data) => {
+        try{
+            const formData = {
+                text: data.message,
+                file: "",
+                ticket: ticket,
+            }
+            await browserAPIRequest.post('/ticket/intaraction',formData);
+            addToast({title:"Sucesso",description:"Mensagem enviada",type:"success"});
+            refreshInteractions(Number(ticket))
+            setValue("message", "")
+        }catch(e){
+            addToast({title:"Erro",description:"Erro ao enviar mensagem tente novamente",type:"error"})
+        }
+        
+    });
+
+    useEffect(()=>{
+        setInteractions(messages);
+    },[])
+
+    
     return (
 
         <section className={styles.chat}>
@@ -39,80 +78,43 @@ export function Chat({ messages, openDate, description }: InteractionProps) {
                 <div className={styles.msgerChat}>
                     {
                         user &&(
-                            messages.map(ev => {
-                                if(user.id===ev.sender.id){
-                                    return (
-                                        <SendedChat
-                                            text={ev.text}
-                                            sender={`${ev.sender.name} ${ev.sender.surname}(${ev.sender.email})`}
-                                            id={ev.id}
-                                            file={ev.file}
-                                            created_at={ev.created_at}
-                                            key={ev.id}
-                                        />
-                                    )
-                                }else{
-                                    return (
-                                        <ReceivedChat
-                                            text={ev.text}
-                                            sender={`${ev.sender.name} ${ev.sender.surname}(${ev.sender.email})`}
-                                            id={ev.id}
-                                            file={ev.file}
-                                            created_at={ev.created_at}
-                                            key={ev.id}
-                                        />
-                                    )
-                                }
-                            })
+                            interactions && (
+                                interactions.map(ev => {
+                                    if(user.id===ev.sender.id){
+                                        return (
+                                            <SendedChat
+                                                text={ev.text}
+                                                sender={`${ev.sender.name} ${ev.sender.surname} (${ev.sender.email})`}
+                                                id={ev.id}
+                                                file={ev.file}
+                                                created_at={ev.created_at}
+                                                key={ev.id}
+                                            />
+                                        )
+                                    }else{
+                                        return (
+                                            <ReceivedChat
+                                                text={ev.text}
+                                                sender={`${ev.sender.name} ${ev.sender.surname} (${ev.sender.email})`}
+                                                id={ev.id}
+                                                file={ev.file}
+                                                created_at={ev.created_at}
+                                                key={ev.id}
+                                            />
+                                        )
+                                    }
+                                })
+                            )
                         )
                     }
-
-                    {/* <ReceivedChat text="aaaaaaaaaaaaaaa" sender="jorge" id="" file="" created_at={new Date} />
-                    <SendedChat text="" sender="" id="" file="" created_at={new Date} />
-                    <ReceivedChat text="aaxxbbbaaaa" sender="as" id="" file="aaaaa" created_at={new Date} />
-                    <SendedChat text="aaaaaaaaaaaaaaa" sender="joamo" id="" file="aaaaa" created_at={new Date} />
-                    <ReceivedChat text="aaaaaaaaaaaaaaa" sender="jorge" id="" file="" created_at={new Date} />
-                    <SendedChat text="" sender="" id="" file="" created_at={new Date} />
-                    <ReceivedChat text="aaxxbbbaaaa" sender="as" id="" file="aaaaa" created_at={new Date} />
-                    <SendedChat text="aaaaaaaaaaaaaaa" sender="joamo" id="" file="aaaaa" created_at={new Date} />
-                    <ReceivedChat text="aaaaaaaaaaaaaaa" sender="jorge" id="" file="" created_at={new Date} />
-                    <SendedChat text="" sender="" id="" file="" created_at={new Date} />
-                    <ReceivedChat text="aaxxbbbaaaa" sender="as" id="" file="aaaaa" created_at={new Date} /> */}
                 </div>
-                <form className={styles.inputTextArea}>
-                    <input type="text" className={styles.msgInput} placeholder="Digite sua mensagem..." />
+                <form className={styles.inputTextArea}  onSubmit={handleSubmit(onSubmit)}>
+                    <input type="text" className={styles.msgInput} placeholder="Digite sua mensagem..." maxLength={1000} {...register("message", {required: {value:true, message:"É necessário preencher a mensagem" }})}/>
                     <button type="submit" className={styles.msgSendButton}>Send</button>
                 </form>
             </div>
         </section>
 
-
-        // <div className={styles.chatContainer}>
-        //     <div className={styles.description}>
-        //         <p>{description}</p>
-        //         <span className={styles.hour}>{openDate}</span>
-        //         <hr />
-        //     </div>
-
-        //     <div className={styles.chat}>
-        //         {messages.map(e => {
-        //             return (
-        //                 <div key={e.id} className={styles.send}>
-        //                     <ReceivedChat
-        //                         text={e.text}
-        //                         id={e.id}
-        //                         created_at={e.created_at}
-        //                         file={e.file} sender={`${e.sender.name} ${e.sender.surname} (${e.sender.email})`}
-        //                     />
-        //                 </div>
-        //             )
-
-
-        //         }
-        //         )}
-        //     </div>
-        //     <textarea/>
-        // </div>
     );
 
 }

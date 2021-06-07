@@ -1,4 +1,7 @@
 import { FaPaperclip, FaTrash } from "react-icons/fa";
+import { useInteraction } from "../../../contexts/InteractionContext";
+import { useToast } from "../../../contexts/ToastContext";
+import { browserAPIRequest } from "../../../services/api";
 import styles from "./send.module.scss";
 
 interface ChatProps {
@@ -13,10 +16,19 @@ interface ChatProps {
 
 export function SendedChat({ id, text, file, sender, created_at }: ChatProps) {
 
-    function deleteChat(id:string){
+    const {addToast} = useToast();
+    const {refreshInteractions} = useInteraction();
 
+    async function deleteChat(id:string){
+        try{
+            const res = await browserAPIRequest.delete(`/ticket/intaraction/${id}`);
+            addToast({title:"Sucesso",description:"Mensagem excluida",type:"info"});
+            refreshInteractions(res.data.idTicket)
+        }catch(e){
+            addToast({title:"Erro",description:"Erro ao excluir mensagem tente novamente",type:"error"})
+        }
     }
-    
+
     return (
         <div className={styles.rightMsg}>
             <div className={styles.msgBubble}>
