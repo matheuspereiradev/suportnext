@@ -114,13 +114,18 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
                     </div>
                     <form className={styles.inputTextArea} onSubmit={handleSubmit(onSubmit)}>
                         <textarea className={styles.msgInput} placeholder="Digite sua mensagem..." maxLength={1000} {...register("message", { required: { value: true, message: "É necessário preencher a mensagem" } })} />
-                        <div className={styles.privateSwitch}>
-                            <label className={styles.legend}>Privado?</label>
-                            <label className={styles.switch}>
-                                <input type="checkbox" {...register("private", {})} />
-                                <span className={styles.slider}></span>
-                            </label>
-                        </div>
+                        { 
+                            (user?.admin) && (
+                                <div className={styles.privateSwitch}>
+                                    <label className={styles.legend}>Privado?</label>
+                                    <label className={styles.switch}>
+                                        <input type="checkbox" {...register("isPrivate", {})} />
+                                        <span className={styles.slider}></span>
+                                    </label>
+                                </div>
+                            )
+                        }
+
                         <button type="submit" className={styles.msgSendButton}>Enviar</button>
                     </form>
                 </div>

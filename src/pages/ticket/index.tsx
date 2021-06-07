@@ -9,41 +9,7 @@ import { format, parseISO } from 'date-fns';
 import { ptBR } from "date-fns/locale";
 import { clientAPIRequest } from '../../services/api';
 import { FaFilter, FaPlusCircle } from 'react-icons/fa';
-
-interface Status {
-  id: number,
-  name: string,
-  icon: string
-}
-
-interface Company {
-  id: number,
-  name: string,
-}
-
-interface Category {
-  id: number,
-  name: string,
-}
-
-interface Requester {
-  id: string,
-  name: string,
-  surname: string,
-  email: string,
-  gender: string
-}
-
-interface Ticket {
-  id: string,
-  title: string,
-  description: string,
-  created_at: Date,
-  requester: Requester
-  status: Status,
-  company: Company,
-  category: Category
-}
+import { Ticket } from "../../interfaces/Ticket";
 
 interface TicketListPros {
   tickets: Array<Ticket>

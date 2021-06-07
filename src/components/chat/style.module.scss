@@ -55,6 +55,7 @@
             padding: .7rem;
             border-top: var(--border);
             background: #eee;
+            
 
             .privateSwitch {
                 display: flex;
@@ -135,6 +136,7 @@
         .msgInput {
             flex: 1;
             background: #ddd;
+            margin-right: .5rem;
         }
 
         .msgSendButton{
