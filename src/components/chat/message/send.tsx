@@ -1,4 +1,4 @@
-import { FaPaperclip, FaTrash } from "react-icons/fa";
+import { FaEyeSlash, FaPaperclip, FaTrash } from "react-icons/fa";
 import { useInteraction } from "../../../contexts/InteractionContext";
 import { useToast } from "../../../contexts/ToastContext";
 import { browserAPIRequest } from "../../../services/api";
@@ -9,10 +9,11 @@ interface ChatProps {
     text: string,
     file: string,
     created_at: Date,
+    isPrivate:boolean
     sender: string
 }
 
-export function SendedChat({ id, text, file, sender, created_at }: ChatProps) {
+export function SendedChat({ id, text, file,isPrivate, sender, created_at }: ChatProps) {
 
     const {addToast} = useToast();
     const {removeInteraction} = useInteraction();
@@ -29,8 +30,8 @@ export function SendedChat({ id, text, file, sender, created_at }: ChatProps) {
 
     return (
         <div className={styles.rightMsg}>
-            <div className={styles.msgBubble}>
-                <span className={styles.autor}>{sender}</span>
+            <div className={styles.msgBubble} style={{backgroundColor:`#${(isPrivate)?('57B8FF'):('E1FFC7')}`}}>
+                <span className={styles.autor}>{(isPrivate)&&(<FaEyeSlash/>)} {sender}</span>
                 <button className={styles.trash} onClick={()=>{deleteChat(id)}}><FaTrash /></button>
                 <p>{text}</p>
                 {

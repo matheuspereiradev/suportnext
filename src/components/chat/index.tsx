@@ -56,7 +56,7 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
                 text: data.message,
                 file: "",
                 ticket: ticket,
-                isPrivate:data.isPrivate
+                isPrivate: data.isPrivate
             }
             await browserAPIRequest.post('/ticket/intaraction', formData);
             addToast({ title: "Sucesso", description: "Mensagem enviada", type: "success" });
@@ -93,6 +93,7 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
                                                     id={ev.id}
                                                     file={ev.file}
                                                     created_at={ev.created_at}
+                                                    isPrivate={ev.isPrivate}
                                                     key={ev.id}
                                                 />
                                             )
@@ -104,6 +105,7 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
                                                     id={ev.id}
                                                     file={ev.file}
                                                     created_at={ev.created_at}
+                                                    isPrivate={ev.isPrivate}
                                                     key={ev.id}
                                                 />
                                             )
@@ -115,7 +117,7 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
                     </div>
                     <form className={styles.inputTextArea} onSubmit={handleSubmit(onSubmit)}>
                         <textarea className={styles.msgInput} placeholder="Digite sua mensagem..." maxLength={1000} {...register("message", { required: { value: true, message: "É necessário preencher a mensagem" } })} />
-                        { 
+                        {
                             (user?.admin) && (
                                 <div className={styles.privateSwitch}>
                                     <label className={styles.legend}>Privado?</label>
