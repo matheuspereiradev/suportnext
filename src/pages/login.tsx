@@ -1,3 +1,4 @@
+import { GetStaticProps } from "next";
 import Head from "next/head";
 import { FormEvent, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
@@ -48,3 +49,13 @@ export default function Home() {
         </>
     )
 }
+
+export const getStaticProps:GetStaticProps = async ()=>{
+ 
+    return{
+      props:{
+      },
+  
+      revalidate:60*60*24*30
+    }
+  }
