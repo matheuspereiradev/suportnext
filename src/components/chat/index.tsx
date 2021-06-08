@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 import Link from 'next/link';
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { ReceivedChat } from "./message/received";
 import { SendedChat } from "./message/send";
 import { useAuth } from "../../contexts/AuthContext";
@@ -48,6 +48,8 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
     const { user } = useAuth();
     const { addToast } = useToast();
 
+    const audioRef = useRef<HTMLAudioElement>(null)
+
     const { register, handleSubmit, setValue, formState: { errors } } = useForm();
 
     const onSubmit = handleSubmit(async (data) => {
@@ -62,6 +64,7 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
             addToast({ title: "Sucesso", description: "Mensagem enviada", type: "success" });
             refreshInteractions(Number(ticket))
             setValue("message", "")
+            audioRef.current.play()
         } catch (e) {
             addToast({ title: "Erro", description: "Erro ao enviar mensagem tente novamente", type: "error" })
         }
@@ -128,7 +131,10 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
                                 </div>
                             )
                         }
-
+                        <audio
+                            src="/sendMessage.mp3"
+                            ref={audioRef}
+                        />
                         <button type="submit" className={styles.msgSendButton}>Enviar</button>
                     </form>
                 </div>
