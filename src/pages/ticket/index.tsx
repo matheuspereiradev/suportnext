@@ -46,8 +46,7 @@ export default function TicketList({ tickets }: TicketListPros) {
                 <div className={styles.search}>
                   <input type="text" placeholder="Buscar" />
                   <div className={styles.value}>
-                    <input type="checkbox" value="onlyMe" />
-                    <label>Somente meus tickets</label>
+                    <label><input type="checkbox" value="onlyMe" />  Somente meus tickets</label>
                   </div>
                 </div>
               </div>

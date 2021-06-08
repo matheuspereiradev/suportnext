@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 import Link from 'next/link';
 
-import { useEffect, useRef } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { ReceivedChat } from "./message/received";
 import { SendedChat } from "./message/send";
 import { useAuth } from "../../contexts/AuthContext";
@@ -9,7 +9,8 @@ import { browserAPIRequest, clientAPIRequest } from "../../services/api";
 import { useForm } from 'react-hook-form';
 import { useToast } from "../../contexts/ToastContext";
 import { useInteraction } from "../../contexts/InteractionContext";
-import { FiSend } from "react-icons/fi";
+import { MdSend } from "react-icons/md";
+import { FaClipboard, FaPaperclip, FaPaperPlane } from "react-icons/fa";
 
 interface Interaction {
     id: string,
@@ -47,19 +48,22 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
     const { interactions, refreshInteractions, setInteractions } = useInteraction();
     const { user } = useAuth();
     const { addToast } = useToast();
+    const [file, setFile] = useState<File>()
 
     const audioRef = useRef<HTMLAudioElement>(null)
 
     const { register, handleSubmit, setValue, formState: { errors } } = useForm();
 
+
     const onSubmit = handleSubmit(async (data) => {
         try {
-            const formData = {
-                text: data.message,
-                file: "",
-                ticket: ticket,
-                isPrivate: data.isPrivate
-            }
+            const formData = new FormData();
+            formData.append('text', data.message)
+            formData.append('ticket', ticket)
+            formData.append('isPrivate', data.isPrivate)
+            formData.append('file', file)
+            console.log(formData)
+
             await browserAPIRequest.post('/ticket/intaraction', formData);
             addToast({ title: "Sucesso", description: "Mensagem enviada", type: "success" });
             refreshInteractions(Number(ticket))
@@ -71,6 +75,14 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
 
     });
 
+    function handleFiles(event: ChangeEvent<HTMLInputElement>) {
+        if (!event.target.files[0]) {
+            return;
+        }
+
+        setFile(event.target.files[0])
+    }
+
     useEffect(() => {
         setInteractions(messages);
     }, [])
@@ -78,6 +90,7 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
 
     return (
         <>
+
             <section className={styles.chat}>
                 <div className={styles.msger}>
                     <div className={styles.description}>
@@ -119,7 +132,15 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
                         }
                     </div>
                     <form className={styles.inputTextArea} onSubmit={handleSubmit(onSubmit)}>
+
                         <textarea className={styles.msgInput} placeholder="Digite sua mensagem..." maxLength={1000} {...register("message", { required: { value: true, message: "É necessário preencher a mensagem" } })} />
+
+                        <div className={styles.clip}>
+                            <span>
+                                <FaPaperclip />
+                            </span>
+                            <input type="file" name="file" id="file" className={styles.upload} onChange={handleFiles} placeholder="Upload File" />
+                        </div>
                         {
                             (user?.admin) && (
                                 <div className={styles.privateSwitch}>
@@ -135,7 +156,9 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
                             src="/sendMessage.mp3"
                             ref={audioRef}
                         />
-                        <button type="submit" className={styles.msgSendButton}>Enviar</button>
+                        <div className={styles.send}>
+                            <button type="submit" className={styles.msgSendButton}><MdSend /></button>
+                        </div>
                     </form>
                 </div>
             </section>

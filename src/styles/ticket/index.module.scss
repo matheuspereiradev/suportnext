@@ -43,18 +43,20 @@
 
                 .value {
 
-
                     padding-top: 1rem;
                     font-size: 0.9rem;
                     font-weight: 500;
-
+                    
                     label {
+                        cursor: pointer;
                         margin-left: 0.5rem;
+                        font-size: 1rem;
                     }
 
                     input[type=checkbox] {
                         position: relative;
                         cursor: pointer;
+                        margin-right: .3rem;
                     }
 
                     input[type=checkbox]:before {
