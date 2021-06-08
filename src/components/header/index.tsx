@@ -38,9 +38,7 @@ export function Header() {
             </button>
               </Link>
 
-              <button className={styles.withBorder}>
-                Cadastre-se
-            </button>
+             
             </>
 
           )
