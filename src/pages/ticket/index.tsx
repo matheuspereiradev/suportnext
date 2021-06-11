@@ -8,8 +8,10 @@ import { parseCookies } from 'nookies';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from "date-fns/locale";
 import { clientAPIRequest } from '../../services/api';
-import { FaFilter, FaPlusCircle } from 'react-icons/fa';
+import { FaFilter, FaPlusCircle, FaSearch } from 'react-icons/fa';
 import { Ticket } from "../../interfaces/Ticket";
+import { useState } from "react";
+import { useStatus } from "../../contexts/StatusContext";
 
 interface TicketListPros {
   tickets: Array<Ticket>
@@ -18,6 +20,30 @@ interface TicketListPros {
 export default function TicketList({ tickets }: TicketListPros) {
 
   const { user } = useAuth();
+  const { status } = useStatus();
+  const [filterTickets, setFilterTickets] = useState<Array<Ticket>>(tickets)
+  const [textFilter, setTextFilter] = useState<string>('')
+  const [startDate, setStartDate] = useState<Date>(new Date)
+
+  const [onlyMy, setOnlyMy] = useState<boolean>(false)
+
+  function handleFilters() {
+    setFilterTickets(tickets)
+
+    setFilterTickets(tickets.filter(applyFilters))
+  }
+
+  const applyFilters = (tkt: Ticket) => {
+    return (
+      (new RegExp(textFilter, 'i').test(tkt.title) ||
+        tkt.id == textFilter ||
+        new RegExp(textFilter, 'i').test(tkt.requester.email) ||
+        new RegExp(textFilter, 'i').test(tkt.company.name) ||
+        new RegExp(textFilter, 'i').test(`${tkt.requester.name} ${tkt.requester.surname}`)
+      ) && (onlyMy ? tkt.requester.id === user.id : true)
+
+    )
+  }
 
   return (
     <>
@@ -40,21 +66,55 @@ export default function TicketList({ tickets }: TicketListPros) {
                 <Link href="/ticket/novo">
                   <button className={styles.buttonAddTicket}><FaPlusCircle /> Novo Ticket</button>
                 </Link>
+                <button className={styles.buttonAddTicket} onClick={() => { handleFilters() }}><FaSearch /> Pesquisar</button>
               </div>
               <div>
                 <strong><FaFilter /> Filtros</strong><br />
                 <div className={styles.search}>
-                  <input type="text" placeholder="Buscar" />
+                  <input type="text" placeholder="Buscar (Cód, titulo, solicitante, empresa...)" value={textFilter} onChange={
+                    event => {
+                      setTextFilter(event.target.value);
+                    }
+                  } />
                   <div className={styles.value}>
-                    <label><input type="checkbox" value="onlyMe" />  Somente meus tickets</label>
+                    <label className={styles.withPointer}><input type="checkbox"
+                      checked={onlyMy}
+                      onChange={() => { setOnlyMy(!onlyMy) }}
+                    /> Somente meus tickets</label>
+                  </div>
+                  <div className={styles.value}>
+                    <label>Status:</label><br/>
+                    {
+                      (status && (
+                        status.map(stt=>{
+                          return(
+                            <>
+                            <label className={styles.withPointer} key={stt.id}><input type="checkbox"
+                              checked={onlyMy}
+                              onChange={() => { setOnlyMy(!onlyMy) }}
+                            /><img className={styles.ico} src={stt.icon}/> {stt.name}</label><br/>
+                            </>
+                          )
+                        })
+                      ))
+                    }
+                  </div>
+                  <div className={styles.value} style={{color:"red"}}>
+                    {/* <label>Entre:</label><br />
+                    <input type="date" 
+                           className={styles.dateField} 
+                    /> <span>e</span> <input type="date" className={styles.dateField} /> */}
+
+
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
           <div className={styles.ticketsArea}>
-            {tickets.length > 0 ? (
-              tickets.map(tkt => {
+            {filterTickets.length > 0 ? (
+              filterTickets.map(tkt => {
                 return (
                   <TicketItem key={tkt.id} icon={tkt.status.icon} status={tkt.status.name} user={`${tkt.requester.name} ${tkt.requester.surname} (${tkt.requester.email})`} company={tkt.company.name} code={tkt.id} title={tkt.title} category={tkt.category.name} opendate={tkt.created_at} />
                 )
