@@ -38,7 +38,6 @@ export default function TicketNew({ companies, categories }: TicketNewPros) {
 
     const { addToast } = useToast();
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-    // const onSubmit = data => console.log(data);
     const onSubmit = handleSubmit(async (data) => {
         try{
             const res = await browserAPIRequest.post('/ticket',data);

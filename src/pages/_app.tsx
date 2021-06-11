@@ -4,6 +4,7 @@ import { Header } from '../components/header'
 import { AuthProvider } from '../contexts/AuthContext'
 import { ToastProvider } from '../contexts/ToastContext'
 import { StatusProvider } from '../contexts/StatusContext'
+import { CategoryProvider } from '../contexts/CategoriesContext'
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -11,10 +12,12 @@ function MyApp({ Component, pageProps }) {
       <ToastProvider>
         <AuthProvider>
           <StatusProvider>
-          <Header />
-          <main>
-            <Component {...pageProps} />
-          </main>
+            <CategoryProvider>
+              <Header />
+              <main>
+                <Component {...pageProps} />
+              </main>
+            </CategoryProvider>
           </StatusProvider>
         </AuthProvider>
       </ToastProvider>

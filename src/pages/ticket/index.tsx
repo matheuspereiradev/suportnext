@@ -12,6 +12,7 @@ import { FaFilter, FaPlusCircle, FaSearch } from 'react-icons/fa';
 import { Ticket } from "../../interfaces/Ticket";
 import { useState } from "react";
 import { useStatus } from "../../contexts/StatusContext";
+import { useCategory } from "../../contexts/CategoriesContext";
 
 interface TicketListPros {
   tickets: Array<Ticket>
@@ -21,6 +22,7 @@ export default function TicketList({ tickets }: TicketListPros) {
 
   const { user } = useAuth();
   const { status } = useStatus();
+  const { categories } = useCategory();
   const [filterTickets, setFilterTickets] = useState<Array<Ticket>>(tickets)
   const [textFilter, setTextFilter] = useState<string>('')
   const [startDate, setStartDate] = useState<Date>(new Date)
@@ -83,29 +85,44 @@ export default function TicketList({ tickets }: TicketListPros) {
                     /> Somente meus tickets</label>
                   </div>
                   <div className={styles.value}>
-                    <label>Status:</label><br/>
+                    <strong>Status:</strong><br />
                     {
                       (status && (
-                        status.map(stt=>{
-                          return(
-                            <>
-                            <label className={styles.withPointer} key={stt.id}><input type="checkbox"
-                              checked={onlyMy}
-                              onChange={() => { setOnlyMy(!onlyMy) }}
-                            /><img className={styles.ico} src={stt.icon}/> {stt.name}</label><br/>
-                            </>
+                        status.map(stt => {
+                          return (
+                            <div key={stt.id}>
+                              <label className={styles.withPointer} ><input type="checkbox"
+                                checked={onlyMy}
+                                onChange={() => { setOnlyMy(!onlyMy) }}
+                              /><img className={styles.ico} src={stt.icon} /> {stt.name}</label><br />
+                            </div>
                           )
                         })
                       ))
                     }
                   </div>
-                  <div className={styles.value} style={{color:"red"}}>
-                    {/* <label>Entre:</label><br />
-                    <input type="date" 
-                           className={styles.dateField} 
-                    /> <span>e</span> <input type="date" className={styles.dateField} /> */}
-
-
+                  <div className={styles.value}>
+                    <strong>Categorias:</strong><br />
+                    {
+                      (categories && (
+                        categories.map(cat => {
+                          return (
+                            <div key={cat.id}>
+                              <label className={styles.withPointer}><input type="checkbox"
+                                checked={onlyMy}
+                                onChange={() => { setOnlyMy(!onlyMy) }}
+                              /> {cat.name}</label><br />
+                            </div>
+                          )
+                        })
+                      ))
+                    }
+                  </div>
+                  <div className={styles.value}>
+                    <label>Entre:</label><br />
+                    <input type="date"
+                      className={styles.dateField}
+                    /> <span>e</span> <input type="date" className={styles.dateField} />
                   </div>
                 </div>
               </div>
