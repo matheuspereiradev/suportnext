@@ -10,21 +10,12 @@ import { useState } from "react";
 import { Error } from "../../components/error";
 import Router from 'next/router'
 import { useToast } from "../../contexts/ToastContext";
+import { Company } from "../../interfaces/Ticket";
+import { useCategory } from "../../contexts/CategoriesContext";
 
-interface Company {
-    id: number,
-    name: string,
-}
-
-interface Category {
-    id: number,
-    name: string,
-}
 
 interface TicketNewPros {
-    companies: Array<Company>,
-    categories: Array<Category>
-
+    companies: Array<Company>
 }
 
 type FormData = {
@@ -34,9 +25,10 @@ type FormData = {
     company: number;
 };
 
-export default function TicketNew({ companies, categories }: TicketNewPros) {
+export default function TicketNew({ companies }: TicketNewPros) {
 
     const { addToast } = useToast();
+    const { categories } = useCategory();
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     const onSubmit = handleSubmit(async (data) => {
         try{
@@ -134,19 +126,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         }
     })
 
-    const categoryRequest = await apiClient.get('/ticket/category');
-
-    const categories = categoryRequest.data.map(category => {
-        return {
-            id: category.id,
-            name: category.name
-        }
-    })
-
     return {
         props: {
-            companies,
-            categories
+            companies
         }
     }
 }

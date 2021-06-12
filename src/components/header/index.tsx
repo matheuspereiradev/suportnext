@@ -35,10 +35,8 @@ export function Header() {
               <Link href="/login">
                 <button className={styles.onlyText}>
                   Entrar
-            </button>
+                </button>
               </Link>
-
-             
             </>
 
           )
