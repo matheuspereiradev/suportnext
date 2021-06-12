@@ -85,6 +85,12 @@ export default function TicketList({ tickets }: TicketListPros) {
                     /> Somente meus tickets</label>
                   </div>
                   <div className={styles.value}>
+                    <label>Entre:</label><br />
+                    <input type="date"
+                      className={styles.dateField}
+                    /> <span>e</span> <input type="date" className={styles.dateField} />
+                  </div>
+                  <div className={styles.value}>
                     <strong>Status:</strong><br />
                     {
                       (status && (
@@ -117,12 +123,6 @@ export default function TicketList({ tickets }: TicketListPros) {
                         })
                       ))
                     }
-                  </div>
-                  <div className={styles.value}>
-                    <label>Entre:</label><br />
-                    <input type="date"
-                      className={styles.dateField}
-                    /> <span>e</span> <input type="date" className={styles.dateField} />
                   </div>
                 </div>
               </div>
