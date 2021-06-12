@@ -100,7 +100,7 @@ export default function TicketList({ tickets }: TicketListPros) {
                               <label className={styles.withPointer} ><input type="checkbox"
                                 checked={onlyMy}
                                 onChange={() => { setOnlyMy(!onlyMy) }}
-                              /><img className={styles.ico} src={stt.icon} /> {stt.name}</label><br />
+                              /><img className={styles.ico} src={`/${stt.icon}`} /> {stt.name}</label><br />
                             </div>
                           )
                         })

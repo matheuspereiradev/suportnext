@@ -20,7 +20,7 @@ export function TicketItem({ status, icon, user, company, code, title, category,
             <div className={styles.container}>
                 <div className={styles.content}>
                     <div className={styles.firstLine}>
-                        <img src={icon} />
+                        <img src={`/${icon}`} />
                         <span>{status}</span><strong>|</strong>
                         <span> {user}</span><strong>|</strong>
                         <span> {company}</span>
