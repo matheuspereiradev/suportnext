@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { Message, useToast } from "../../contexts/ToastContext";
+import { Message, useToast } from "@contexts/ToastContext";
 import { FaTimes } from "react-icons/fa";
 import { useEffect } from "react";
 

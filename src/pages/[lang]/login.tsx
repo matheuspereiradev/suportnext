@@ -1,9 +1,8 @@
 import { GetStaticProps } from "next";
 import Head from "next/head";
 import { FormEvent, useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
-import { useToast } from "../contexts/ToastContext";
-import styles from "../styles/login.module.scss"
+import { useAuth } from "@contexts/AuthContext";
+import styles from "@styles/login.module.scss"
 
 export default function Home() {
 

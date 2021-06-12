@@ -1,7 +1,5 @@
 import styles from "./style.module.scss";
-import Link from 'next/link';
 import { useState } from "react";
-import { FaExclamationCircle } from "react-icons/fa";
 
 interface SwitchProperties {
     checked: boolean

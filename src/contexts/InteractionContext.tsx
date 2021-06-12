@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react"
-import { Interaction } from "../interfaces/Ticket";
-import { browserAPIRequest } from "../services/api";
+import { Interaction } from "@interfaces/Ticket";
+import { browserAPIRequest } from "@services/api";
 import ChildrenProvider from "./ChidreanProvider";
 import { format, parseISO } from 'date-fns';
 import { ptBR } from "date-fns/locale";
