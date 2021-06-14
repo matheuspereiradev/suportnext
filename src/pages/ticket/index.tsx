@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useStatus } from "@contexts/StatusContext";
 import { useCategory } from "@contexts/CategoriesContext";
 import { DefaultLayout } from "@layouts/DefaultLayout";
+import { useEffect } from 'react';
 
 interface TicketListPros {
   tickets: Array<Ticket>
@@ -23,10 +24,12 @@ export default function TicketList({ tickets }: TicketListPros) {
   const { user } = useAuth();
   const { status } = useStatus();
   const { categories } = useCategory();
-  const [filterTickets, setFilterTickets] = useState<Array<Ticket>>(tickets)
-  const [textFilter, setTextFilter] = useState<string>('')
-  const [startDate, setStartDate] = useState<Date>(new Date)
 
+  const [filterTickets, setFilterTickets] = useState<Array<Ticket>>(tickets)
+
+  const [textFilter, setTextFilter] = useState<string>('')
+  const [startDate, setStartDate] = useState<string>(format(new Date().setDate(new Date().getDate() - 15), 'yyyy-MM-dd', { locale: ptBR }))
+  const [endDate, setEndDate] = useState<string>(format(new Date, 'yyyy-MM-dd', { locale: ptBR }))
   const [onlyMy, setOnlyMy] = useState<boolean>(false)
 
   function handleFilters() {
@@ -36,6 +39,7 @@ export default function TicketList({ tickets }: TicketListPros) {
   }
 
   const applyFilters = (tkt: Ticket) => {
+    const endDateTomorrow = new Date(endDate).setDate(new Date(endDate).getDate() + 1);
     return (
       (new RegExp(textFilter, 'i').test(tkt.title) ||
         tkt.id == textFilter ||
@@ -43,9 +47,15 @@ export default function TicketList({ tickets }: TicketListPros) {
         new RegExp(textFilter, 'i').test(tkt.company.name) ||
         new RegExp(textFilter, 'i').test(`${tkt.requester.name} ${tkt.requester.surname}`)
       ) && (onlyMy ? tkt.requester.id === user.id : true)
+        && (new Date(tkt.created_at) >= new Date(startDate))
+        && (new Date(tkt.created_at) < new Date(endDateTomorrow))
 
     )
   }
+
+  useEffect(()=>{
+    handleFilters()
+  },[])
 
   return (
     <DefaultLayout titleKey="tickets">
@@ -81,7 +91,14 @@ export default function TicketList({ tickets }: TicketListPros) {
                     <label>Entre:</label><br />
                     <input type="date"
                       className={styles.dateField}
-                    /> <span>e</span> <input type="date" className={styles.dateField} />
+                      value={startDate}
+                      onChange={(e)=>{setStartDate(e.target.value)}}
+                    /><span> e </span>
+                    <input type="date"
+                      className={styles.dateField}
+                      value={endDate}
+                      onChange={(e)=>{setEndDate(e.target.value)}}
+                    />
                   </div>
                   <div className={styles.value}>
                     <strong>Status:</strong><br />
