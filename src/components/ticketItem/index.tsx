@@ -1,6 +1,5 @@
-import { FaBolt } from "react-icons/fa";
+
 import styles from "./style.module.scss";
-import { useEffect, useState } from "react";
 import Link from 'next/link'
 
 interface ticket {

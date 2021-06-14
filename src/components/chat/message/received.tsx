@@ -1,4 +1,4 @@
-import { FaEyeSlash, FaLowVision, FaPaperclip, FaTrash } from "react-icons/fa";
+import { FaEyeSlash, FaPaperclip } from "react-icons/fa";
 import styles from "./received.module.scss";
 
 interface ChatProps {

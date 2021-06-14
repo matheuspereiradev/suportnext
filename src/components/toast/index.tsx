@@ -1,6 +1,5 @@
 import styles from "./style.module.scss";
-import { FaTimes } from "react-icons/fa";
-import { Message, useToast } from "../../contexts/ToastContext";
+import { Message } from "@contexts/ToastContext";
 import {ToastContent} from './content'
 
 interface MessageToast {

@@ -1,16 +1,14 @@
 import styles from "./style.module.scss";
-import Link from 'next/link';
-
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { ReceivedChat } from "./message/received";
 import { SendedChat } from "./message/send";
-import { useAuth } from "../../contexts/AuthContext";
-import { browserAPIRequest, clientAPIRequest } from "../../services/api";
+import { useAuth } from "@contexts/AuthContext";
+import { browserAPIRequest } from "@services/api";
 import { useForm } from 'react-hook-form';
-import { useToast } from "../../contexts/ToastContext";
-import { useInteraction } from "../../contexts/InteractionContext";
+import { useToast } from "@contexts/ToastContext";
+import { useInteraction } from "@contexts/InteractionContext";
 import { MdSend } from "react-icons/md";
-import { FaClipboard, FaPaperclip, FaPaperPlane } from "react-icons/fa";
+import { FaPaperclip } from "react-icons/fa";
 
 interface Interaction {
     id: string,

@@ -1,7 +1,7 @@
 import { FaEyeSlash, FaPaperclip, FaTrash } from "react-icons/fa";
-import { useInteraction } from "../../../contexts/InteractionContext";
-import { useToast } from "../../../contexts/ToastContext";
-import { browserAPIRequest } from "../../../services/api";
+import { useInteraction } from "@contexts/InteractionContext";
+import { useToast } from "@contexts/ToastContext";
+import { browserAPIRequest } from "@services/api";
 import styles from "./send.module.scss";
 
 interface ChatProps {
