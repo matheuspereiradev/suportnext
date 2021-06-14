@@ -1,9 +1,9 @@
 import { GetStaticProps } from "next";
-import Head from "next/head";
+import Link from 'next/link'
 import { FormEvent, useState } from "react";
 import { useAuth } from "@contexts/AuthContext";
-import { useToast } from "@contexts/ToastContext";
 import styles from "@styles/login.module.scss"
+import { BlankLayout } from "@layouts/BlankLayout";
 
 export default function Home() {
 
@@ -17,15 +17,7 @@ export default function Home() {
     }
 
     return (
-        <>
-            <Head>
-                <title>WA Suporte - Login</title>
-                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-                <meta name="copyright" content="WA" />
-                <meta name="language" content="PT-BR" />
-                <meta name="author" content="matheuspereiradev, matheuslima20111997@gmail.com" />
-                <meta name="keywords" content="wa,suporte,wasolutions" />
-            </Head>
+        <BlankLayout titleKey="login">
             <main className={styles.loginPage}>
 
                 <div className={styles.card}>
@@ -36,6 +28,9 @@ export default function Home() {
                                 <input type="text" value={email} onChange={(e)=>{setEmail(e.target.value)}} placeholder="Email"/><br />
                                 <input type="password" value={password} onChange={(e)=>{setPassword(e.target.value)}} placeholder="Senha"/><br />
                                 <button type="submit">Entrar</button>
+                                <Link href="/">
+                                    <button className={styles.back}>Voltar</button>
+                                </Link>
                             </form>
                             <div className={styles.forgotPassword}>Esqueci minha senha</div>
                         </div>
@@ -46,7 +41,7 @@ export default function Home() {
 
             </main>
 
-        </>
+        </BlankLayout>
     )
 }
 
