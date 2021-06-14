@@ -12,9 +12,9 @@ interface TraslateContextProps {
 export const TranslateContext = createContext({} as TraslateContextProps)
 
 
-export const TranslateProvider = ({ children }) => {
+export const TranslateProvider: React.FC<{ lang: Locale }> = ({ lang, children }) => {
 
-    const [locale, setLocale] = useState<Locale>();
+    const [locale, setLocale] = useState<Locale>(lang);
     const { query } = useRouter()
 
     useEffect(() => {

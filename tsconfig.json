@@ -15,6 +15,7 @@
       "@services/*":["services/*"],
       "@styles/*":["styles/*"],
       "@translations/*":["translations/*"],
+      "@layout/*":["Layout/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,

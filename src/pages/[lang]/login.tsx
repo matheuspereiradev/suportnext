@@ -1,8 +1,10 @@
-import { GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import { FormEvent, useState } from "react";
 import { useAuth } from "@contexts/AuthContext";
 import styles from "@styles/login.module.scss"
+import DefaultLayout from "../../Layout/DefaultLayout";
+import { browserAPIRequest } from "@services/api";
 
 export default function Home() {
 
@@ -16,15 +18,7 @@ export default function Home() {
     }
 
     return (
-        <>
-            <Head>
-                <title>WA Suporte - Login</title>
-                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-                <meta name="copyright" content="WA" />
-                <meta name="language" content="PT-BR" />
-                <meta name="author" content="matheuspereiradev, matheuslima20111997@gmail.com" />
-                <meta name="keywords" content="wa,suporte,wasolutions" />
-            </Head>
+        <DefaultLayout titleKey="login">
             <main className={styles.loginPage}>
 
                 <div className={styles.card}>
@@ -45,16 +39,6 @@ export default function Home() {
 
             </main>
 
-        </>
+        </DefaultLayout>
     )
 }
-
-export const getStaticProps:GetStaticProps = async ()=>{
- 
-    return{
-      props:{
-      },
-  
-      revalidate:60*60*24*30
-    }
-  }

@@ -1,6 +1,5 @@
 import '@styles/global.scss'
 import styles from '@styles/app.module.scss'
-import { Header } from '@components/header'
 import { AuthProvider } from '@contexts/AuthContext'
 import { ToastProvider } from '@contexts/ToastContext'
 import { StatusProvider } from '@contexts/StatusContext'
@@ -13,10 +12,7 @@ function MyApp({ Component, pageProps }) {
         <AuthProvider>
           <StatusProvider>
             <CategoryProvider>
-              <Header />
-              <main>
-                <Component {...pageProps} />
-              </main>
+              <Component {...pageProps} />
             </CategoryProvider>
           </StatusProvider>
         </AuthProvider>
