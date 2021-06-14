@@ -1,18 +1,18 @@
 import Head from "next/head";
 import Link from 'next/link'
 import { GetServerSideProps, GetStaticProps, NextPageContext } from "next";
-import { TicketItem } from "../../components/ticketItem";
-import { useAuth } from "../../contexts/AuthContext";
-import styles from "../../styles/ticket/index.module.scss";
+import { TicketItem } from "@components/ticketItem";
+import { useAuth } from "@contexts/AuthContext";
+import styles from "@styles/ticket/index.module.scss";
 import { parseCookies } from 'nookies';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from "date-fns/locale";
-import { clientAPIRequest } from '../../services/api';
+import { clientAPIRequest } from '@services/api';
 import { FaFilter, FaPlusCircle, FaSearch } from 'react-icons/fa';
-import { Ticket } from "../../interfaces/Ticket";
+import { Ticket } from "@interfaces/Ticket";
 import { useState } from "react";
-import { useStatus } from "../../contexts/StatusContext";
-import { useCategory } from "../../contexts/CategoriesContext";
+import { useStatus } from "@contexts/StatusContext";
+import { useCategory } from "@contexts/CategoriesContext";
 
 interface TicketListPros {
   tickets: Array<Ticket>

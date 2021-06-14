@@ -1,17 +1,14 @@
 import Head from "next/head";
 import { GetServerSideProps } from "next";
-import { useAuth } from "../../contexts/AuthContext";
-import styles from "../../styles/ticket/novo.module.scss";
+import styles from "@styles/ticket/novo.module.scss";
 import { parseCookies } from 'nookies';
-import { browserAPIRequest, clientAPIRequest } from '../../services/api';
-import { FaCheckCircle, FaSave } from "react-icons/fa";
+import { browserAPIRequest, clientAPIRequest } from '@services/api';
 import { useForm } from 'react-hook-form';
-import { useState } from "react";
-import { Error } from "../../components/error";
+import { Error } from "@components/error";
 import Router from 'next/router'
-import { useToast } from "../../contexts/ToastContext";
-import { Company } from "../../interfaces/Ticket";
-import { useCategory } from "../../contexts/CategoriesContext";
+import { useToast } from "@contexts/ToastContext";
+import { Company } from "@interfaces/Ticket";
+import { useCategory } from "@contexts/CategoriesContext";
 
 
 interface TicketNewPros {

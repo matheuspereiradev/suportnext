@@ -1,15 +1,15 @@
 import Head from "next/head";
 import { GetServerSideProps, GetStaticProps, NextPageContext } from "next";
-import { useAuth } from "../../contexts/AuthContext";
-import styles from "../../styles/ticket/details.module.scss";
+import { useAuth } from "@contexts/AuthContext";
+import styles from "@styles/ticket/details.module.scss";
 import { parseCookies } from 'nookies';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from "date-fns/locale";
-import { browserAPIRequest, clientAPIRequest } from '../../services/api';
-import { Chat } from "../../components/chat";
-import { Ticket } from "../../interfaces/Ticket";
-import { InteractionProvider } from "../../contexts/InteractionContext";
-import { useToast } from "../../contexts/ToastContext";
+import { browserAPIRequest, clientAPIRequest } from '@services/api';
+import { Chat } from "@components/chat";
+import { Ticket } from "@interfaces/Ticket";
+import { InteractionProvider } from "@contexts/InteractionContext";
+import { useToast } from "@contexts/ToastContext";
 import Router from 'next/router'
 
 interface props {
