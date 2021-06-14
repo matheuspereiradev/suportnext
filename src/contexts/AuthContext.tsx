@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { browserAPIRequest } from '../services/api'
+import { browserAPIRequest } from '@services/api'
 import { setCookie, parseCookies, destroyCookie } from 'nookies'
 import Router from 'next/router'
 import ChildrenProvider from './ChidreanProvider';

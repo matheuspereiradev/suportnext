@@ -1,10 +1,8 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { browserAPIRequest } from '../services/api'
-import { setCookie, parseCookies, destroyCookie } from 'nookies'
-import Router from 'next/router'
+import { createContext, useContext, useEffect, useState } from 'react';
+import { browserAPIRequest } from '@services/api'
 import ChildrenProvider from './ChidreanProvider';
 import { useToast } from './ToastContext';
-import { Status } from '../interfaces/Ticket';
+import { Status } from '@interfaces/Ticket';
 
 interface StatusContextData {
     status: Status[],

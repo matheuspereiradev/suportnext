@@ -1,8 +1,8 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
-import { browserAPIRequest } from '../services/api'
+import { browserAPIRequest } from '@services/api'
 import ChildrenProvider from './ChidreanProvider';
 import { useToast } from './ToastContext';
-import { Category } from '../interfaces/Ticket';
+import { Category } from '@interfaces/Ticket';
 
 interface CategoryContextData {
     categories: Category[],

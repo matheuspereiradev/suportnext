@@ -1,8 +1,6 @@
 import Head from 'next/head'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Header } from '@components/header'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
 
 interface Props {
   titleKey: string

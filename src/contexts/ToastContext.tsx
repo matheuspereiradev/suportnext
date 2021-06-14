@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react"
 import {v4 as uuid} from 'uuid';
-import { Toast } from "../components/toast"
+import { Toast } from "@components/toast"
 import ChildrenProvider from "./ChidreanProvider"
 
 interface ToastContextData{
