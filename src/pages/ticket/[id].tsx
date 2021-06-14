@@ -11,6 +11,7 @@ import { Ticket } from "@interfaces/Ticket";
 import { InteractionProvider } from "@contexts/InteractionContext";
 import { useToast } from "@contexts/ToastContext";
 import Router from 'next/router'
+import { DefaultLayout } from "@layouts/DefaultLayout";
 
 interface props {
     ticket: Ticket
@@ -32,14 +33,7 @@ export default function TicketDetails({ ticket }: props) {
     }
 
     return (
-        <>
-            <Head>
-                <title>WA Suporte - Tickets</title>
-                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-                <meta name="copyright" content="WA" />
-                <meta name="language" content="PT-BR" />
-                <meta name="author" content="matheuspereiradev, matheuslima20111997@gmail.com" />
-            </Head>
+        <DefaultLayout titleKey="detalhes">
             <main className={styles.container}>
                 <div className={styles.header}>
                     <h1>Detalhes do Ticket (<strong className={styles.idArea}><img src={`/${ticket.status.icon}`} />#{ticket.id}</strong>) {((user?.id===ticket.requester.id)&&(<button className={styles.cancelButton} onClick={() => { cancelTicket(ticket.id) }}>Cancelar</button>))}</h1>
@@ -64,7 +58,7 @@ export default function TicketDetails({ ticket }: props) {
                 </div>
             </main>
 
-        </>
+        </DefaultLayout>
     )
 }
 

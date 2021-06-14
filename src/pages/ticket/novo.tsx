@@ -9,7 +9,7 @@ import Router from 'next/router'
 import { useToast } from "@contexts/ToastContext";
 import { Company } from "@interfaces/Ticket";
 import { useCategory } from "@contexts/CategoriesContext";
-
+import { DefaultLayout } from "@layouts/DefaultLayout";
 
 interface TicketNewPros {
     companies: Array<Company>
@@ -39,14 +39,7 @@ export default function TicketNew({ companies }: TicketNewPros) {
     });
 
     return (
-        <>
-            <Head>
-                <title>WA Suporte - Tickets</title>
-                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-                <meta name="copyright" content="WA" />
-                <meta name="language" content="PT-BR" />
-                <meta name="author" content="matheuspereiradev, matheuslima20111997@gmail.com" />
-            </Head>
+        <DefaultLayout titleKey="novo">
             <main className={styles.container}>
                 <div className={styles.header}>
                     <h1>Novo Ticket</h1>
@@ -94,7 +87,7 @@ export default function TicketNew({ companies }: TicketNewPros) {
 
             </main>
 
-        </>
+        </DefaultLayout>
     )
 }
 

@@ -1,6 +1,5 @@
-import Head from "next/head";
 import Link from 'next/link'
-import { GetServerSideProps, GetStaticProps, NextPageContext } from "next";
+import { GetServerSideProps } from "next";
 import { TicketItem } from "@components/ticketItem";
 import { useAuth } from "@contexts/AuthContext";
 import styles from "@styles/ticket/index.module.scss";
@@ -13,6 +12,7 @@ import { Ticket } from "@interfaces/Ticket";
 import { useState } from "react";
 import { useStatus } from "@contexts/StatusContext";
 import { useCategory } from "@contexts/CategoriesContext";
+import { DefaultLayout } from "@layouts/DefaultLayout";
 
 interface TicketListPros {
   tickets: Array<Ticket>
@@ -48,14 +48,7 @@ export default function TicketList({ tickets }: TicketListPros) {
   }
 
   return (
-    <>
-      <Head>
-        <title>WA Suporte - Tickets</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta name="copyright" content="WA" />
-        <meta name="language" content="PT-BR" />
-        <meta name="author" content="matheuspereiradev, matheuslima20111997@gmail.com" />
-      </Head>
+    <DefaultLayout titleKey="tickets">
       <main className={styles.container}>
         <div>
           <h1>Tickets</h1>
@@ -146,7 +139,7 @@ export default function TicketList({ tickets }: TicketListPros) {
         </div>
       </main>
 
-    </>
+    </DefaultLayout>
   )
 }
 
