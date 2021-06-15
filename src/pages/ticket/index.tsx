@@ -9,11 +9,10 @@ import { ptBR } from "date-fns/locale";
 import { clientAPIRequest } from '@services/api';
 import { FaFilter, FaPlusCircle, FaSearch } from 'react-icons/fa';
 import { Ticket } from "@interfaces/Ticket";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useStatus } from "@contexts/StatusContext";
 import { useCategory } from "@contexts/CategoriesContext";
 import { DefaultLayout } from "@layouts/DefaultLayout";
-import { useEffect } from 'react';
 
 interface TicketListPros {
   tickets: Array<Ticket>
@@ -28,8 +27,8 @@ export default function TicketList({ tickets }: TicketListPros) {
   const [filterTickets, setFilterTickets] = useState<Array<Ticket>>(tickets)
 
   const [textFilter, setTextFilter] = useState<string>('')
-  const [startDate, setStartDate] = useState<string>(format(new Date().setDate(new Date().getDate() - 15), 'yyyy-MM-dd', { locale: ptBR }))
-  const [endDate, setEndDate] = useState<string>(format(new Date, 'yyyy-MM-dd', { locale: ptBR }))
+  const [startDate, setStartDate] = useState<string>(format(new Date().setDate(new Date().getDate() - 15), 'yyyy-MM-dd'))
+  const [endDate, setEndDate] = useState<string>(format(new Date(), 'yyyy-MM-dd'))
   const [onlyMy, setOnlyMy] = useState<boolean>(false)
 
   function handleFilters() {
@@ -37,9 +36,10 @@ export default function TicketList({ tickets }: TicketListPros) {
 
     setFilterTickets(tickets.filter(applyFilters))
   }
-
+  
   const applyFilters = (tkt: Ticket) => {
     const endDateTomorrow = new Date(endDate).setDate(new Date(endDate).getDate() + 1);
+
     return (
       (new RegExp(textFilter, 'i').test(tkt.title) ||
         tkt.id == textFilter ||
@@ -53,7 +53,7 @@ export default function TicketList({ tickets }: TicketListPros) {
     )
   }
 
-  useEffect(()=>{
+  useCallback(()=>{
     handleFilters()
   },[])
 
@@ -143,7 +143,7 @@ export default function TicketList({ tickets }: TicketListPros) {
             {filterTickets.length > 0 ? (
               filterTickets.map(tkt => {
                 return (
-                  <TicketItem key={tkt.id} icon={tkt.status.icon} status={tkt.status.name} user={`${tkt.requester.name} ${tkt.requester.surname} (${tkt.requester.email})`} company={tkt.company.name} code={tkt.id} title={tkt.title} category={tkt.category.name} opendate={tkt.created_at} />
+                  <TicketItem key={tkt.id} icon={tkt.status.icon} status={tkt.status.name} user={`${tkt.requester.name} ${tkt.requester.surname} (${tkt.requester.email})`} company={tkt.company.name} code={tkt.id} title={tkt.title} category={tkt.category.name} opendate={tkt.formated_created_at} />
                 )
               })
             ) : (
@@ -183,7 +183,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       id: ticket.id,
       title: ticket.title,
       description: ticket.description,
-      created_at: format(parseISO(ticket.created_at), 'dd MMM yyyy HH:mm', { locale: ptBR }),
+      formated_created_at: format(parseISO(ticket.created_at), 'dd MMM yyyy HH:mm', { locale: ptBR }),
+      created_at: ticket.created_at,
       requester: ticket.requester,
       status: ticket.status,
       company: ticket.company,

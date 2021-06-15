@@ -37,6 +37,7 @@ export interface Ticket {
     title: string,
     description: string,
     created_at: Date,
+    formated_created_at: Date,
     requester: User
     status: Status,
     company: Company,
