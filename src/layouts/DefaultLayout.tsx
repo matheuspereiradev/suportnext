@@ -8,7 +8,6 @@ interface Props {
 }
 
 export const DefaultLayout: React.FC<Props> = ({ titleKey, children }) => {
-
     return (
     <div className={styles.defaultLayout}>
       <Head>

@@ -1,15 +1,14 @@
 .headerContainer {
-    overflow: hidden;
     background-color: var(--white);
     height: 5rem;
     width: 100%;
     position: fixed;
     display: flex;
     align-items: center;
-    padding: 2rem 4rem;
     border-bottom: 0.1rem solid var(--gray-100);
     box-shadow: 1px 1px 16px 0 rgba(0, 0, 0, .1);
     z-index: 3;
+    padding: 2rem 2rem;
 
     .logo {
         width: 8rem;
@@ -28,99 +27,119 @@
     }
 
 
-}
 
-.navLinks {
-    display: inline;
-    margin-left: auto;
-    float: right;
-    font-size: 1.1rem;
-    font-weight: 800;
-    align-items: center;
-    text-align: center;
 
-    .onlyText {
-        display: inline-block;
-        height: 3rem;
-        width: 8rem;
-        margin-left: 3rem;
-        padding: 0.9rem 0.7rem 0.9rem 0.7rem;
-        text-decoration: none;
-        border-radius: 4rem;
-        background-color: var(--white);
-        color: var(--blue-wa);
-        border: var(--blue-wa) solid 1px;
-        transition: background-color 0.3s;
+    .navLinks {
+        display: inline;
+        margin-left: auto;
+        float: right;
+        font-size: 1.1rem;
+        font-weight: 800;
+        align-items: center;
+        text-align: center;
+        z-index: 29;
 
-        &:hover {
-            background-color: var(--blue);
+        .onlyText {
+            display: inline-block;
+            height: 3rem;
+            width: 8rem;
+            margin-left: 3rem;
+            padding: 0.9rem 0.7rem 0.9rem 0.7rem;
+            text-decoration: none;
+            border-radius: 4rem;
+            background-color: var(--white);
+            color: var(--blue-wa);
+            border: var(--blue-wa) solid 1px;
+            transition: background-color 0.3s;
+
+            &:hover {
+                background-color: var(--blue);
+                color: var(--white);
+            }
+        }
+
+        .userName {
+            display: inline-block;
+        }
+
+        .withBorder {
+            display: inline-block;
+            margin-left: 3rem;
+            height: 3rem;
+            width: 8rem;
+            padding: 0.9rem 0.7rem 0.9rem 0.7rem;
+            border-radius: 4rem;
+            border: var(--blue-wa) solid 1px;
+            text-decoration: none;
+            background-color: var(--blue-wa);
             color: var(--white);
-        }
-    }
+            transition: background-color 0.3s;
 
-    .userName{
-        display: inline-block;
-    }
-
-    .withBorder {
-        display: inline-block;
-        margin-left: 3rem;
-        height: 3rem;
-        width: 8rem;
-        padding: 0.9rem 0.7rem 0.9rem 0.7rem;
-        border-radius: 4rem;
-        border: var(--blue-wa) solid 1px;
-        text-decoration: none;
-        background-color: var(--blue-wa);
-        color: var(--white);
-        transition: background-color 0.3s;
-
-        &:hover {
-            background-color: var(--blue);
-            color: var(--white);
-        }
-    }
-
-    .dropdown {
-
-        position: relative;
-        display: inline-block;
-
-        .dropbtn {
-            border: none;
-            cursor: pointer;
+            &:hover {
+                background-color: var(--blue);
+                color: var(--white);
+            }
         }
 
-        .dropdownContent {
-            display: none;
-            position: absolute;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
+        .dropdown {
+            position: relative;
+            display: inline-block;
 
-            a {
-                font-size: 12px;
-                color: black;
-                padding: 8px 8px;
+            .dropbtn {
+                margin-left: 3rem;
+                height: 5rem;
+                padding: 0.9rem 0.7rem;
+                border: var(--blue-wa) solid 1px;
                 text-decoration: none;
-                display: block;
+                background-color: var(--blue-wa);
+                color: var(--white);
+                transition: background-color 0.3s;
+
+                &:hover {
+                    background-color: var(--blue);
+                    color: var(--white);
+                }
             }
 
-            a:hover {
-                background-color: #d6d6d6
+            .dropdownContent {
+                display: none;
+                right: 0;
+                position: absolute;
+                background-color: var(--white);
+                min-width: 10rem;
+                box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+                font-weight: 500;
+                font-size: 1rem;
+                
+                
+                a {
+                    cursor: pointer;
+                    color: var(--primary);
+                    padding: .7rem .7rem;
+                    text-decoration: none;
+                    display: block;
+
+                    &:hover {
+                        background-color: var(--blue-wa);
+                    color: var(--white);
+                    }
+                }
             }
+
+            &:hover {
+                .dropbtn {
+                    background-color: var(--blue);
+                    color: var(--white);
+
+                }
+
+                .dropdownContent {
+                    display: block;
+                }
+            }
+
         }
 
-        &:hover {
 
-            background-color: aquamarine;
-            .dropdown-content {
-                display: block;
-            }
-
-        }
     }
-
-
 }

@@ -36,7 +36,7 @@ export default function TicketDetails({ ticket }: props) {
         <DefaultLayout titleKey="detalhes">
             <main className={styles.container}>
                 <div className={styles.header}>
-                    <h1>Detalhes do Ticket (<strong className={styles.idArea}><img src={`/${ticket.status.icon}`} />#{ticket.id}</strong>) {((user?.id===ticket.requester.id)&&(<button className={styles.cancelButton} onClick={() => { cancelTicket(ticket.id) }}>Cancelar</button>))}</h1>
+                    <h1>Detalhes do Ticket (<strong className={styles.idArea}><img src={`/${ticket.status.icon}`} />#{ticket.id}</strong>) {(((user?.id===ticket.requester.id)||(user?.admin))&&(<button className={styles.cancelButton} onClick={() => { cancelTicket(ticket.id) }}>Cancelar</button>))}</h1>
                     <hr />
                     <br />
                 </div>

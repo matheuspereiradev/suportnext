@@ -9,7 +9,7 @@ import { ptBR } from "date-fns/locale";
 import { clientAPIRequest } from '@services/api';
 import { FaFilter, FaPlusCircle, FaSearch } from 'react-icons/fa';
 import { Ticket } from "@interfaces/Ticket";
-import { useCallback, useState } from "react";
+import { FormEvent, useCallback, useState } from "react";
 import { useStatus } from "@contexts/StatusContext";
 import { useCategory } from "@contexts/CategoriesContext";
 import { DefaultLayout } from "@layouts/DefaultLayout";
@@ -30,6 +30,15 @@ export default function TicketList({ tickets }: TicketListPros) {
   const [startDate, setStartDate] = useState<string>(format(new Date().setDate(new Date().getDate() - 15), 'yyyy-MM-dd'))
   const [endDate, setEndDate] = useState<string>(format(new Date(), 'yyyy-MM-dd'))
   const [onlyMy, setOnlyMy] = useState<boolean>(false)
+  // const [categoriesFilter, setCategoriesFilter] = useState<number[]>([])
+
+  // const changeCategories = (e)=>{
+  //   if(e.target.checked){
+  //     setCategoriesFilter([...categoriesFilter,Number(e.target.value)])
+  //   }else{
+  //     setCategoriesFilter(categoriesFilter.filter(c=>c!==Number(e.target.value)))
+  //   }
+  // }
 
   function handleFilters() {
     setFilterTickets(tickets)
@@ -49,7 +58,7 @@ export default function TicketList({ tickets }: TicketListPros) {
       ) && (onlyMy ? tkt.requester.id === user.id : true)
         && (new Date(tkt.created_at) >= new Date(startDate))
         && (new Date(tkt.created_at) < new Date(endDateTomorrow))
-
+        // && (categoriesFilter.filter(c=>c==tkt.category.id).length > 0)
     )
   }
 
@@ -108,8 +117,9 @@ export default function TicketList({ tickets }: TicketListPros) {
                           return (
                             <div key={stt.id}>
                               <label className={styles.withPointer} ><input type="checkbox"
-                                checked={onlyMy}
-                                onChange={() => { setOnlyMy(!onlyMy) }}
+                                // value={stt.id}
+                                // onChange={() => { setOnlyMy(!onlyMy) }}
+                                defaultChecked
                               /><img className={styles.ico} src={stt.icon} /> {stt.name}</label><br />
                             </div>
                           )
@@ -125,8 +135,9 @@ export default function TicketList({ tickets }: TicketListPros) {
                           return (
                             <div key={cat.id}>
                               <label className={styles.withPointer}><input type="checkbox"
-                                checked={onlyMy}
-                                onChange={() => { setOnlyMy(!onlyMy) }}
+                                // value={cat.id}
+                                // onChange={(e)=>{changeCategories(e)}}
+                                defaultChecked
                               /> {cat.name}</label><br />
                             </div>
                           )
@@ -140,6 +151,8 @@ export default function TicketList({ tickets }: TicketListPros) {
             </div>
           </div>
           <div className={styles.ticketsArea}>
+            <p style={{float:"right"}}>Tickets Qnt: <strong>{filterTickets.length}</strong></p>
+            <br />
             {filterTickets.length > 0 ? (
               filterTickets.map(tkt => {
                 return (

@@ -1,6 +1,7 @@
 import styles from "./style.module.scss";
 import Link from 'next/link'
 import { useAuth } from "@contexts/AuthContext";
+import { FaUserCircle,FaCaretDown, FaSignOutAlt, FaUserCog } from "react-icons/fa";
 
 export function Header() {
 
@@ -25,10 +26,17 @@ export function Header() {
         {
           isLogged ? (
             <>
-              <div className={styles.userName}>{user.name}</div>
+              <div className={styles.dropdown} style={{float:"right"}}>
+                <button className={styles.dropbtn}><FaUserCircle/> {user.name} <FaCaretDown/></button>
+                <div className={styles.dropdownContent}>
+                  <a><FaUserCog/> Configurar</a>
+                  <a onClick={() => handleLogout()}><FaSignOutAlt/> Sair</a>
+                </div>
+              </div>
+              {/* 
               <button className={styles.withBorder} onClick={() => handleLogout()}>
                 Sair
-            </button>
+            </button> */}
             </>
           ) : (
             <>
