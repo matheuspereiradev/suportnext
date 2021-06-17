@@ -12,6 +12,7 @@ import { InteractionProvider } from "@contexts/InteractionContext";
 import { useToast } from "@contexts/ToastContext";
 import Router from 'next/router'
 import { DefaultLayout } from "@layouts/DefaultLayout";
+import { useStatus } from "@contexts/StatusContext";
 
 interface props {
     ticket: Ticket
@@ -19,24 +20,36 @@ interface props {
 
 export default function TicketDetails({ ticket }: props) {
 
-    const {addToast} = useToast();
-    const {user} = useAuth();
+    const { addToast } = useToast();
+    const { user } = useAuth();
+    const { status } = useStatus();
 
     const cancelTicket = async (id: string) => {
         try {
-            await browserAPIRequest.delete(`/ticket/${ticket.id}`);
+            await browserAPIRequest.delete(`/ticket/${id}`);
             addToast({ title: "Sucesso", description: "Ticket cancelado com sucesso", type: "info" })
             Router.push('/ticket');
         } catch (e) {
             addToast({ title: "Erro", description: "Erro ao cancelar o ticket", type: "error" })
         }
     }
+    const changeStatusTicket = async (idStatus: string, idTicket:string) => {
+        try {
+            const tkt = await browserAPIRequest.patch(`/ticket/status/${idTicket}`,{status:idStatus});
+            addToast({ title: "Sucesso", description: "Status do ticket atualizado", type: "success" })
+            // ticket = tkt;
+        } catch (e) {
+            addToast({ title: "Erro", description: "Erro ao alterar status do ticket", type: "error" })
+        }
+    }
+
+    
 
     return (
         <DefaultLayout titleKey="detalhes">
             <main className={styles.container}>
                 <div className={styles.header}>
-                    <h1>Detalhes do Ticket (<strong className={styles.idArea}><img src={`/${ticket.status.icon}`} />#{ticket.id}</strong>) {(((user?.id===ticket.requester.id)||(user?.admin))&&(<button className={styles.cancelButton} onClick={() => { cancelTicket(ticket.id) }}>Cancelar</button>))}</h1>
+                    <h1>Detalhes do Ticket (<strong className={styles.idArea}><img src={`/${ticket.status.icon}`} />#{ticket.id}</strong>) {(((user?.id === ticket.requester.id) || (user?.admin)) && (<button className={styles.cancelButton} onClick={() => { cancelTicket(ticket.id) }}>Cancelar</button>))}</h1>
                     <hr />
                     <br />
                 </div>
@@ -47,8 +60,28 @@ export default function TicketDetails({ ticket }: props) {
                     <div className={styles.details}>
                         <strong>Solicitante:</strong><span>{` ${ticket.requester.name} ${ticket.requester.surname} (${ticket.requester.email})`}</span>
                         <strong>Empresa:</strong><span>{` ${ticket.company.name}`}</span>
-                        <strong>Status:</strong><img src={`/${ticket.status.icon}`} /><span>{` ${ticket.status.name}`}</span>
-                        <strong>Categoria:</strong><span>{` ${ticket.category.name}`}</span>
+                        <strong>Status: </strong>
+                        {
+                            user?.admin ? (
+                                <select className={styles.comboBox} onChange={(e)=>{changeStatusTicket(e.target.value,ticket.id)}}>
+                                    {
+                                        status?.map(e => {
+                                            return (
+                                                <option key={e.id} value={e.id} selected={e.id==ticket.status.id} >{e.name}</option>
+                                            )
+                                        }
+                                        )
+                                    }
+                                </select>
+
+                            ) : (
+                                <>
+                                    <img src={`/${ticket.status.icon}`} /><span>{` ${ticket.status.name}`}</span>
+                                </>
+                            )
+
+                        }
+                        <strong> Categoria:</strong><span>{` ${ticket.category.name}`}</span>
                         <strong>Aberto em:</strong><span>{` ${ticket.created_at}`}</span>
                         <InteractionProvider>
                             <Chat openDate={ticket.created_at} description={ticket.description} messages={ticket.interactions} ticket={ticket.id} />

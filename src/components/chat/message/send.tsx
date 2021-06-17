@@ -37,7 +37,10 @@ export function SendedChat({ id, text, file,isPrivate, sender, created_at }: Cha
                 {
                     file && (
                         <>
-                            <a href={file} target="_blank">
+                        {/* <embed src={`http://localhost:3030/files/${file}`} width="500" height="375" 
+ type="application/pdf"></embed> */}
+                        
+                            <a href={`http://localhost:3030/files/${file}`} target="_blank">
                                 <button className={styles.anexo}><FaPaperclip /> Ver anexo</button>
                             </a><br />
                         </>

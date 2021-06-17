@@ -151,7 +151,7 @@ export default function TicketList({ tickets }: TicketListPros) {
             </div>
           </div>
           <div className={styles.ticketsArea}>
-            <p style={{float:"right"}}>Tickets Qnt: <strong>{filterTickets.length}</strong></p>
+            <p style={{float:"right"}}><strong>{filterTickets.length}-{tickets.length}</strong></p>
             <br />
             {filterTickets.length > 0 ? (
               filterTickets.map(tkt => {

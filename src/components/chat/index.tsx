@@ -134,7 +134,7 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
 
                         <div className={styles.clip}>
                             <span>
-                                <FaPaperclip />
+                                <FaPaperclip fontSize={30} style={{padding:'.1rem'}}/>
                             </span>
                             <input type="file" name="file" id="file" className={styles.upload} onChange={handleFiles} placeholder="Upload File" />
                         </div>
