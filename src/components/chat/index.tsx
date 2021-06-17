@@ -82,7 +82,7 @@ export function Chat({ messages, openDate, description, ticket }: InteractionPro
 
     useEffect(() => {
         setInteractions(messages);
-    }, [])
+    }, [messages])
 
 
     return (
