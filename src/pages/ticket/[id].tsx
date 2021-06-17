@@ -1,6 +1,7 @@
-import {useRouter} from "next/router";
-import { GetServerSideProps
- } from "next";
+import { useRouter } from "next/router";
+import {
+    GetServerSideProps
+} from "next";
 import { useAuth } from "@contexts/AuthContext";
 import styles from "@styles/ticket/details.module.scss";
 import { parseCookies } from 'nookies';
@@ -40,18 +41,18 @@ export default function TicketDetails({ ticket }: props) {
             addToast({ title: "Erro", description: "Erro ao cancelar o ticket", type: "error" })
         }
     }
-    const changeStatusTicket = async (idStatus: string, idTicket:string) => {
+    const changeStatusTicket = async (idStatus: string, idTicket: string) => {
         try {
-            const tkt = await browserAPIRequest.patch(`/ticket/status/${idTicket}`,{status:idStatus});
+            const tkt = await browserAPIRequest.patch(`/ticket/status/${idTicket}`, { status: idStatus });
             addToast({ title: "Sucesso", description: "Status do ticket atualizado", type: "success" })
-            
+
             refreshData();
         } catch (e) {
             addToast({ title: "Erro", description: "Erro ao alterar status do ticket", type: "error" })
         }
     }
 
-    
+
 
     return (
         <DefaultLayout titleKey="detalhes">
@@ -68,15 +69,16 @@ export default function TicketDetails({ ticket }: props) {
                     <div className={styles.details}>
                         <strong>Solicitante:</strong><span>{` ${ticket.requester.name} ${ticket.requester.surname} (${ticket.requester.email})`}</span>
                         <strong>Empresa:</strong><span>{` ${ticket.company.name}`}</span>
-                        <br/>
+                        <strong>Aberto em:</strong><span>{` ${ticket.created_at}`}</span>
+                        <br />
                         <strong>Status: </strong>
                         {
                             user?.admin ? (
-                                <select defaultValue={ticket.status.id} className={styles.comboBox} onChange={(e)=>{changeStatusTicket(e.target.value,ticket.id)}}>
+                                <select defaultValue={ticket.status.id} className={styles.comboBox} onChange={(e) => { changeStatusTicket(e.target.value, ticket.id) }}>
                                     {
                                         status?.map(e => {
                                             return (
-                                                <option key={e.id} value={e.id} selected={e.id==ticket.status.id} >{e.name}</option>
+                                                <option key={e.id} value={e.id} selected={e.id == ticket.status.id} >{e.name}</option>
                                             )
                                         }
                                         )
@@ -91,7 +93,6 @@ export default function TicketDetails({ ticket }: props) {
 
                         }
                         <strong> Categoria:</strong><span>{` ${ticket.category.name}`}</span>
-                        <strong>Aberto em:</strong><span>{` ${ticket.created_at}`}</span>
                         <InteractionProvider>
                             <Chat openDate={ticket.created_at} description={ticket.description} messages={ticket.interactions} ticket={ticket.id} />
                         </InteractionProvider>
