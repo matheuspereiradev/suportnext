@@ -1,5 +1,6 @@
-import Head from "next/head";
-import { GetServerSideProps, GetStaticProps, NextPageContext } from "next";
+import {useRouter} from "next/router";
+import { GetServerSideProps
+ } from "next";
 import { useAuth } from "@contexts/AuthContext";
 import styles from "@styles/ticket/details.module.scss";
 import { parseCookies } from 'nookies';
@@ -8,7 +9,7 @@ import { ptBR } from "date-fns/locale";
 import { browserAPIRequest, clientAPIRequest } from '@services/api';
 import { Chat } from "@components/chat";
 import { Ticket } from "@interfaces/Ticket";
-import { InteractionProvider } from "@contexts/InteractionContext";
+import { InteractionProvider, useInteraction } from "@contexts/InteractionContext";
 import { useToast } from "@contexts/ToastContext";
 import Router from 'next/router'
 import { DefaultLayout } from "@layouts/DefaultLayout";
@@ -19,6 +20,12 @@ interface props {
 }
 
 export default function TicketDetails({ ticket }: props) {
+
+    const router = useRouter();
+
+    const refreshData = () => {
+        router.replace(router.asPath);
+    }
 
     const { addToast } = useToast();
     const { user } = useAuth();
@@ -37,7 +44,8 @@ export default function TicketDetails({ ticket }: props) {
         try {
             const tkt = await browserAPIRequest.patch(`/ticket/status/${idTicket}`,{status:idStatus});
             addToast({ title: "Sucesso", description: "Status do ticket atualizado", type: "success" })
-            // ticket = tkt;
+            
+            refreshData();
         } catch (e) {
             addToast({ title: "Erro", description: "Erro ao alterar status do ticket", type: "error" })
         }
@@ -60,10 +68,11 @@ export default function TicketDetails({ ticket }: props) {
                     <div className={styles.details}>
                         <strong>Solicitante:</strong><span>{` ${ticket.requester.name} ${ticket.requester.surname} (${ticket.requester.email})`}</span>
                         <strong>Empresa:</strong><span>{` ${ticket.company.name}`}</span>
+                        <br/>
                         <strong>Status: </strong>
                         {
                             user?.admin ? (
-                                <select className={styles.comboBox} onChange={(e)=>{changeStatusTicket(e.target.value,ticket.id)}}>
+                                <select defaultValue={ticket.status.id} className={styles.comboBox} onChange={(e)=>{changeStatusTicket(e.target.value,ticket.id)}}>
                                     {
                                         status?.map(e => {
                                             return (
@@ -90,7 +99,6 @@ export default function TicketDetails({ ticket }: props) {
 
                 </div>
             </main>
-
         </DefaultLayout>
     )
 }
