@@ -17,6 +17,7 @@
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;
             width: 100%;
+            min-width: 25rem;
             height: 2.6rem;
             border-radius: 0.5rem;
             padding: 1rem;
@@ -31,10 +32,23 @@
             outline: none;
             padding:0.7rem;
         }
+
+        .row{
+            display: flex;
+            margin-bottom: 2rem;
+            width: 100%;
+
+            .column{
+                display: inline-block;
+                margin-right: 1rem;
+            }
+        }
+
         .buttonArea {
 
             align-items: center;
             text-align: center;
+            padding-top: 2rem;
             padding-bottom: 1rem;
 
             .buttonSave {
@@ -57,26 +71,7 @@
 
             }
 
-            .buttonCancelTicket {
-                margin-left: 1rem;
-                width: 3rem;
-                height: 3rem;
-                padding: 0.9rem 0.7rem 0.9rem 0.7rem;
-                border-radius: 4rem;
-                border: crimson solid 1px;
-                text-decoration: none;
-                background-color: crimson;
-                color: var(--white);
-                transition: background-color 0.3s;
-                cursor: pointer;
-
-                &:hover {
-                    background-color: rgb(158, 16, 44);
-                    border: rgb(158, 16, 44) solid 1px;
-                    color: var(--white);
-                }
-
-            }
+            
         }
 
 
