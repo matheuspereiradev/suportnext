@@ -9,6 +9,7 @@ import { useToast } from "@contexts/ToastContext";
 import { DefaultLayout } from "@layouts/DefaultLayout";
 import { useAuth } from "@contexts/AuthContext";
 import { useEffect } from "react";
+import { LayoutCloseButton } from "@layouts/LayoutCloseButton";
 
 type FormData = {
     name: string;
@@ -44,7 +45,7 @@ export default function Perfil() {
     },[user])
 
     return (
-        <DefaultLayout titleKey="perfil">
+        <LayoutCloseButton titleKey="perfil">
             <main className={styles.container}>
                 <div className={styles.header}>
                     <h1>Editar perfil</h1>
@@ -74,7 +75,6 @@ export default function Perfil() {
                         
                         <div className={styles.buttonArea}>
                             <input type="submit" className={styles.buttonSave} value="Salvar alterações" ></input>
-                            <input type="button" className={styles.buttonCancelTicket} value="X" onClick={()=>{Router.push('/ticket')}}/>
                         </div>
 
                     </form>
@@ -82,7 +82,7 @@ export default function Perfil() {
 
             </main>
 
-        </DefaultLayout>
+        </LayoutCloseButton>
     )
 }
 

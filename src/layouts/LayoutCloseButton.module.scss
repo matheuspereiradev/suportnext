@@ -1,0 +1,32 @@
+.defaultLayout {
+    display: flex;
+    position: relative;
+    main {
+        flex: 1;
+        margin-top: 3rem;
+
+        .closeButton{
+            margin-top: 2.5rem;
+            margin-right: 2.5rem;
+            float: right;
+            font-weight: 800;
+            width: 3rem;
+            height: 3rem;
+            padding: 0.9rem 0.7rem 0.9rem 0.7rem;
+            border-radius: 4rem;
+            border: var(--red) solid 1px;
+            text-decoration: none;
+            background-color: var(--red);
+            color: var(--white);
+            transition: background-color 0.3s;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--red-500);
+                border: var(--red-500) solid 1px;
+                color: var(--white);
+            }
+            
+        }
+    }
+}

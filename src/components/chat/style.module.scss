@@ -63,7 +63,7 @@
             padding: .7rem;
             border-top: var(--border);
             background: #eee;
-
+            color: var(--primary);
 
             .privateSwitch {
                 padding-left: .7rem;
@@ -90,6 +90,7 @@
                         opacity: 0;
                         width: 0;
                         height: 0;
+                        color: var(--primary);
                     }
 
                     .slider {
@@ -144,6 +145,7 @@
             // 
             // padding: .7rem;
             border: none;
+            color: var(--primary);
             border-radius: 3px;
             // font-size: 1em;
         }
