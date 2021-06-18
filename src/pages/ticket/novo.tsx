@@ -10,6 +10,7 @@ import { useToast } from "@contexts/ToastContext";
 import { Company } from "@interfaces/Ticket";
 import { useCategory } from "@contexts/CategoriesContext";
 import { DefaultLayout } from "@layouts/DefaultLayout";
+import { LayoutCloseButton } from "@layouts/LayoutCloseButton";
 
 interface TicketNewPros {
     companies: Array<Company>
@@ -39,7 +40,7 @@ export default function TicketNew({ companies }: TicketNewPros) {
     });
 
     return (
-        <DefaultLayout titleKey="novo">
+        <LayoutCloseButton titleKey="novo">
             <main className={styles.container}>
                 <div className={styles.header}>
                     <h1>Novo Ticket</h1>
@@ -79,7 +80,6 @@ export default function TicketNew({ companies }: TicketNewPros) {
                         </select>
                         <div className={styles.buttonArea}>
                             <input type="submit" className={styles.buttonSaveTicket} value="Abrir ticket" ></input>
-                            <input type="button" className={styles.buttonCancelTicket} value="X" onClick={()=>{Router.push('/ticket')}}/>
                         </div>
 
                     </form>
@@ -87,7 +87,7 @@ export default function TicketNew({ companies }: TicketNewPros) {
 
             </main>
 
-        </DefaultLayout>
+        </LayoutCloseButton>
     )
 }
 
