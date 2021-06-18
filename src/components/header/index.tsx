@@ -29,7 +29,9 @@ export function Header() {
               <div className={styles.dropdown} style={{float:"right"}}>
                 <button className={styles.dropbtn}><FaUserCircle/> {user.name} <FaCaretDown/></button>
                 <div className={styles.dropdownContent}>
+                  <Link href="/usuario/perfil">
                   <a><FaUserCog/> Configurar</a>
+                  </Link>
                   <a onClick={() => handleLogout()}><FaSignOutAlt/> Sair</a>
                 </div>
               </div>

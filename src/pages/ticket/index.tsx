@@ -13,6 +13,7 @@ import { FormEvent, useCallback, useState } from "react";
 import { useStatus } from "@contexts/StatusContext";
 import { useCategory } from "@contexts/CategoriesContext";
 import { DefaultLayout } from "@layouts/DefaultLayout";
+import { useEffect } from 'react';
 
 interface TicketListPros {
   tickets: Array<Ticket>
@@ -62,7 +63,7 @@ export default function TicketList({ tickets }: TicketListPros) {
     )
   }
 
-  useCallback(()=>{
+  useEffect(()=>{
     handleFilters()
   },[])
 
