@@ -3,6 +3,7 @@ import Router from 'next/router'
 import React from 'react'
 import { Header } from '@components/header'
 import styles from './LayoutCloseButton.module.scss'
+import { FaArrowLeft } from 'react-icons/fa'
 
 interface Props {
   titleKey: string
@@ -21,7 +22,7 @@ export const LayoutCloseButton: React.FC<Props> = ({ titleKey, children }) => {
       </Head>
       <Header />
       <main>
-        <input type="button" className={styles.closeButton} value="X" onClick={()=>{Router.push('/ticket')}}/>
+        <button className={styles.closeButton} onClick={()=>{Router.push('/ticket')}}><FaArrowLeft/> Voltar</button>
         {children}
       </main>
     </div>
