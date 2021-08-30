@@ -1,0 +1,96 @@
+.container {
+
+    width: 100%;
+    padding: 0rem 1rem;
+    padding-bottom: 2rem;
+
+    h1 {
+        font-weight: 800;
+        align-items: center;
+        text-align: center;
+    }
+
+
+    .content {
+
+        .details {
+            display: flex;
+            flex-direction: row;
+
+
+        }
+
+        .board {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 1rem;
+
+            .backlog {
+                margin-bottom: 1rem;
+                padding: 1rem;
+                width: 100%;
+                border-radius: .5rem;
+                background-color: white;
+                border: 1px var(--light-border) solid;
+
+                .title {
+                    display: flex;
+                    font-size: 1.1rem;
+
+                    strong {
+                        margin-right: 1rem;
+                    }
+
+                    .responsable {
+                        display: inline;
+                        margin-left: auto;
+                        float: right;
+                    }
+                }
+
+                .body {
+                    margin-top: .5rem;
+                    flex-direction: row;
+                    width: 100%;
+                    display: flex;
+
+                    .columns {
+                        display: "flex";
+                        width: 33.2%;
+                        background-color: white;
+                        justify-content: center;
+
+                        .task {
+                            background-color: var(--light-gray);
+                            display: "flex";
+                            flex-direction: "column";
+                            align-items: "center";
+                            margin: 1rem;
+                            padding: .9rem;
+                            border: 1px var(--light-border) solid;
+                            border-radius: .5rem;
+
+                            p {
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .textNoneTicket {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            vertical-align: middle;
+            padding-top: 5rem;
+        }
+    }
+
+
+
+}

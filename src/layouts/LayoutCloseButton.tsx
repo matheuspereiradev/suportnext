@@ -4,13 +4,15 @@ import React from 'react'
 import { Header } from '@components/header'
 import styles from './LayoutCloseButton.module.scss'
 import { FaArrowLeft } from 'react-icons/fa'
+import Link from 'next/link'
+import { route } from 'next/dist/next-server/server/router'
 
 interface Props {
   titleKey: string
 }
 
 export const LayoutCloseButton: React.FC<Props> = ({ titleKey, children }) => {
-    return (
+  return (
     <div className={styles.defaultLayout}>
       <Head>
         <title>WA Suporte - {titleKey}</title>
@@ -22,7 +24,7 @@ export const LayoutCloseButton: React.FC<Props> = ({ titleKey, children }) => {
       </Head>
       <Header />
       <main>
-        <button className={styles.closeButton} onClick={()=>{Router.push('/ticket')}}><FaArrowLeft/> Voltar</button>
+        <button className={styles.closeButton} onClick={() => { Router.back() }}> Voltar</button>
         {children}
       </main>
     </div>

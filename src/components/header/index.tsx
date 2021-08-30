@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 import Link from 'next/link'
 import { useAuth } from "@contexts/AuthContext";
-import { FaUserCircle,FaCaretDown, FaSignOutAlt, FaUserCog } from "react-icons/fa";
+import { FaUserCircle, FaCaretDown, FaSignOutAlt, FaUserCog, FaCode, FaSitemap, FaFileCode } from "react-icons/fa";
 
 export function Header() {
 
@@ -26,17 +26,32 @@ export function Header() {
         {
           isLogged ? (
             <>
-              <div className={styles.dropdown} style={{float:"right"}}>
-                <button className={styles.dropbtn}><FaUserCircle/> {user.name} <FaCaretDown/></button>
+              <div className={styles.dropdown} style={{ float: "right" }}>
+                <button className={styles.dropbtn}><FaUserCircle /> {user.name} <FaCaretDown /></button>
                 <div className={styles.dropdownContent}>
                   <Link href="/usuario/perfil">
-                  <a><FaUserCog/> Configurar</a>
+                    <a><FaUserCog /> Configurar</a>
                   </Link>
-                  <a onClick={() => handleLogout()}><FaSignOutAlt/> Sair</a>
+                  <a onClick={() => handleLogout()}><FaSignOutAlt /> Sair</a>
                 </div>
               </div>
+
+              {user.admin && (
+                <div className={styles.dropdown} style={{ float: "right" }}>
+                  <button className={styles.dropbtn}><FaCode /> Área dev <FaCaretDown /></button>
+                  <div className={styles.dropdownContent}>
+                    <Link href="/dev/dashboard">
+                      <a><FaFileCode /> Dashboard</a>
+                    </Link>
+                    <Link href="/dev/sprints">
+                      <a><FaSitemap /> Sprints</a>
+                    </Link>
+
+                  </div>
+                </div>
+              )}
               {/* 
-              <button className={styles.withBorder} onClick={() => handleLogout()}>
+              <button  onClick={() => handleLogout()}>
                 Sair
             </button> */}
             </>

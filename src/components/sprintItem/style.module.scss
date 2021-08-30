@@ -1,0 +1,90 @@
+.container {
+    background-color: var(--white);
+    border: 1px solid var(--light-border);
+    padding: 0.5rem 1rem;
+    display: flex;
+    min-width: 70%;
+
+    .content {
+
+        .firstLine {
+            width: 100%;
+            display: flex;
+
+            span {
+                font-size: 0.85rem;
+            }
+
+            img {
+                width: .8rem;
+                margin-right: .2rem;
+                margin-top: -0.2rem;
+            }
+
+            strong {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+
+        .title {
+            font-size: 1.2rem;
+            padding-top: 0.3rem;
+            color: black;
+
+            span {
+                font-weight: 550;
+            }
+
+            strong {
+                font-weight: 700;
+            }
+        }
+
+        .categoryline {
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding-top: 0.3rem;
+        }
+
+    }
+
+    .buttonContent {
+        margin-left: auto;
+        font-weight: 600;
+        color: black;
+
+        .edit {
+            background: none;
+            border: none;
+            border-radius: .3rem;
+            margin-left: 1rem;
+            padding: .6rem;
+            color: var(--light-blue);
+
+            &:hover {
+                background-color: var(--light-blue);
+                color: white
+            }
+        }
+
+        .delete {
+            background: none;
+            border: none;
+            border-radius: .3rem;
+            margin-left: 1rem;
+            padding: .6rem;
+            color: var(--light-red-300);
+
+            &:hover {
+                background-color: var(--light-red-300);
+                color: white
+            }
+        }
+
+    }
+
+    &:hover {
+        background-color: var(--ultra-light-border);
+    }
+}

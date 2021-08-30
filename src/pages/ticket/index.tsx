@@ -1,19 +1,18 @@
-import Link from 'next/link'
-import { GetServerSideProps } from "next";
 import { TicketItem } from "@components/ticketItem";
 import { useAuth } from "@contexts/AuthContext";
+import { useCategory } from "@contexts/CategoriesContext";
+import { useStatus } from "@contexts/StatusContext";
+import { Ticket } from "@interfaces/Ticket";
+import { DefaultLayout } from "@layouts/DefaultLayout";
+import { clientAPIRequest } from '@services/api';
 import styles from "@styles/ticket/index.module.scss";
-import { parseCookies } from 'nookies';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from "date-fns/locale";
-import { clientAPIRequest } from '@services/api';
+import { GetServerSideProps } from "next";
+import Link from 'next/link';
+import { parseCookies } from 'nookies';
+import { useEffect, useState } from "react";
 import { FaFilter, FaPlusCircle, FaSearch } from 'react-icons/fa';
-import { Ticket } from "@interfaces/Ticket";
-import { FormEvent, useCallback, useState } from "react";
-import { useStatus } from "@contexts/StatusContext";
-import { useCategory } from "@contexts/CategoriesContext";
-import { DefaultLayout } from "@layouts/DefaultLayout";
-import { useEffect } from 'react';
 
 interface TicketListPros {
   tickets: Array<Ticket>
@@ -46,7 +45,7 @@ export default function TicketList({ tickets }: TicketListPros) {
 
     setFilterTickets(tickets.filter(applyFilters))
   }
-  
+
   const applyFilters = (tkt: Ticket) => {
     const endDateTomorrow = new Date(endDate).setDate(new Date(endDate).getDate() + 1);
 
@@ -57,15 +56,15 @@ export default function TicketList({ tickets }: TicketListPros) {
         new RegExp(textFilter, 'i').test(tkt.company.name) ||
         new RegExp(textFilter, 'i').test(`${tkt.requester.name} ${tkt.requester.surname}`)
       ) && (onlyMy ? tkt.requester.id === user.id : true)
-        && (new Date(tkt.created_at) >= new Date(startDate))
-        && (new Date(tkt.created_at) < new Date(endDateTomorrow))
-        // && (categoriesFilter.filter(c=>c==tkt.category.id).length > 0)
+      && (new Date(tkt.created_at) >= new Date(startDate))
+      && (new Date(tkt.created_at) < new Date(endDateTomorrow))
+      // && (categoriesFilter.filter(c=>c==tkt.category.id).length > 0)
     )
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     handleFilters()
-  },[])
+  }, [])
 
   return (
     <DefaultLayout titleKey="tickets">
@@ -102,15 +101,15 @@ export default function TicketList({ tickets }: TicketListPros) {
                     <input type="date"
                       className={styles.dateField}
                       value={startDate}
-                      onChange={(e)=>{setStartDate(e.target.value)}}
+                      onChange={(e) => { setStartDate(e.target.value) }}
                     /><span> e </span>
                     <input type="date"
                       className={styles.dateField}
                       value={endDate}
-                      onChange={(e)=>{setEndDate(e.target.value)}}
+                      onChange={(e) => { setEndDate(e.target.value) }}
                     />
                   </div>
-                  <div className={styles.value}>
+                  {/* <div className={styles.value}>
                     <strong>Status:</strong><br />
                     {
                       (status && (
@@ -128,7 +127,7 @@ export default function TicketList({ tickets }: TicketListPros) {
                       ))
                     }
                   </div>
-                  <div className={styles.value}>
+                  <div className={styles.value}> 
                     <strong>Categorias:</strong><br />
                     {
                       (categories && (
@@ -145,14 +144,14 @@ export default function TicketList({ tickets }: TicketListPros) {
                         })
                       ))
                     }
-                  </div>
+                  </div>*/}
                 </div>
               </div>
 
             </div>
           </div>
           <div className={styles.ticketsArea}>
-            <p style={{float:"right"}}><strong>{filterTickets.length}-{tickets.length}</strong></p>
+            <p style={{ float: "right" }}><strong>{filterTickets.length}-{tickets.length}</strong></p>
             <br />
             {filterTickets.length > 0 ? (
               filterTickets.map(tkt => {
@@ -206,9 +205,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
 
   })
-
-
-
 
   return {
     props: {

@@ -1,0 +1,79 @@
+.container {
+    width: 100%;
+    padding: 0rem 1rem;
+
+    h1 {
+        font-weight: 800;
+        align-items: center;
+        text-align: center;
+    }
+
+    .content {
+        margin: 2rem;
+        color: var(--black);
+
+        input[type=text] {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            width: 100%;
+            height: 2.6rem;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            border: 1px solid var(--light-border);
+        }
+
+        input[type=date] {
+
+            height: 2.6rem;
+            font-size: .9rem;
+            border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+            padding: .4rem;
+            border: 1px solid var(--light-border);
+        }
+
+        input[type=datetime] {
+
+            height: 2.6rem;
+            font-size: .9rem;
+            border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+            padding: .4rem;
+            border: 1px solid var(--light-border);
+        }
+
+
+
+        .buttonArea {
+
+            align-items: center;
+            text-align: center;
+            padding-bottom: 1rem;
+
+            .buttonSave {
+                width: 13rem;
+                height: 3rem;
+                padding: 0.9rem 0.7rem 0.9rem 0.7rem;
+                border-radius: 4rem;
+                border: var(--green-400) solid 1px;
+                text-decoration: none;
+                background-color: var(--green-400);
+                color: var(--white);
+                transition: background-color 0.3s;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: var(--green-500);
+                    border: var(--green-500) solid 1px;
+                    color: var(--white);
+                }
+
+            }
+
+
+        }
+
+
+    }
+
+
+
+}
