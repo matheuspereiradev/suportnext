@@ -14,8 +14,25 @@
     .content {
 
         .details {
-            display: flex;
-            flex-direction: row;
+
+
+            .button {
+                margin: .5rem;
+                height: 3rem;
+                padding: 0.9rem 0.7rem 0.9rem 0.7rem;
+                border-radius: 4rem;
+                border: var(--blue-wa) solid 1px;
+                text-decoration: none;
+                background-color: var(--blue-wa);
+                color: var(--white);
+                transition: background-color 0.3s;
+
+                &:hover {
+                    background-color: var(--blue);
+                    border: var(--blue) solid 1px;
+                    color: var(--white);
+                }
+            }
 
             .sprintList {
                 margin-top: 0.5rem;
@@ -55,10 +72,33 @@
                     }
                 }
 
+                .buttons {
+                    button {
+                        margin: .2rem;
+                        font-size: .9rem;
+                        // height: 1rem;
+                        padding: 0.3rem;
+                        border-radius: .5rem;
+                        border: var(--blue-wa) solid 1px;
+                        text-decoration: none;
+                        background-color: var(--blue-wa);
+                        color: var(--white);
+                        transition: background-color 0.3s;
+
+                        &:hover {
+                            background-color: var(--blue);
+                            border: var(--blue) solid 1px;
+                            color: var(--white);
+                            border-radius: 1rem;
+                        }
+                    }
+                }
+
                 .body {
                     margin-top: .5rem;
                     flex-direction: row;
                     width: 100%;
+                    height: 100%;
                     display: flex;
 
                     .columns {
@@ -72,7 +112,7 @@
                             display: "flex";
                             flex-direction: "column";
                             align-items: "center";
-                            margin: 1rem;
+                            margin: .5rem;
                             padding: .9rem;
                             border: 1px var(--light-border) solid;
                             border-radius: .5rem;

@@ -6,6 +6,8 @@ import { GetServerSideProps } from "next";
 import { format, parseISO } from 'date-fns';
 import { ptBR } from "date-fns/locale";
 import { useState } from "react";
+import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
+import { FaEye, FaPlus } from "react-icons/fa";
 
 interface User {
     id: string,
@@ -61,6 +63,39 @@ export default function Dashboard({ sprintProp, sprintList }: DashboardListPros)
 
     const [sprint, setSprint] = useState<Sprint>(sprintProp);
 
+    function handleOnDragEnd(result: DropResult, idBoard: number) {
+        if (!result.destination) return;
+        const { source, destination } = result;
+        const usedLeagueBoardIndex = sprint.backlogs.findIndex(element => element.id === idBoard);
+        const backlogs = JSON.parse(JSON.stringify(sprint.backlogs));
+        if (source.droppableId !== destination.droppableId) {
+            const sourceColumn = backlogs[usedLeagueBoardIndex].tasks[source.droppableId];
+            const destColumn = backlogs[usedLeagueBoardIndex].tasks[destination.droppableId];
+            const [removed] = sourceColumn.splice(source.index, 1);
+            destColumn.splice(destination.index, 0, removed);
+
+            setSprint(
+                {
+                    ...sprint,
+                    backlogs
+                }
+            )
+
+        } else {
+            const column = backlogs[usedLeagueBoardIndex].tasks[source.droppableId];
+            const [removed] = column.splice(source.index, 1);
+            column.splice(destination.index, 0, removed);
+
+            setSprint(
+                {
+                    ...sprint,
+                    backlogs
+                }
+            )
+
+        }
+    }
+
     async function findSprintDetails(id: number) {
         console.log('aqui')
         const details = await browserAPIRequest.get(`/sprint/find/${id}`);
@@ -68,7 +103,7 @@ export default function Dashboard({ sprintProp, sprintList }: DashboardListPros)
     }
 
     return (
-        <DefaultLayout titleKey="tickets">
+        <DefaultLayout titleKey="Painel de sprints">
             <main className={styles.container}>
                 <div>
                     <h1>Painel de sprints</h1>
@@ -80,51 +115,90 @@ export default function Dashboard({ sprintProp, sprintList }: DashboardListPros)
                         <select className={styles.sprintList} defaultValue={sprint.id} onChange={() => findSprintDetails}>
                             {
                                 sprintList.map(
-                                    sp => <option key={sp.id} value={sp.id}>{`${sp.id} ${sp.name} - (${sp.startDate}-${sp.expectedEndDate})`}</option>
+                                    sp => <option key={sp.id} value={sp.id}>{`${sp.id} - ${sp.name} (${sp.startDate}/${sp.expectedEndDate})`}</option>
                                 )
                             }
                         </select>
-                        <button>Adicionar backlog</button>
+                        <button className={styles.button}>Adicionar backlog</button>
                     </div>
                     <div className={styles.board}>
                         {
-                            sprint.backlogs.map(backlog => {
+                            sprint.backlogs.map((backlog, index) => {
                                 return (
-                                    <div className={styles.backlog} key={backlog.id}>
-                                        <div className={styles.title}>
-                                            <strong>BL{backlog.id}</strong> <span>{backlog.title}</span>
-                                            <span className={styles.responsable}>{backlog.responsable.name}</span>
-                                        </div>
-                                        <div className={styles.body}>
-                                            {
-                                                backlog.tasks.map((columns, index) => {
-                                                    return (
-                                                        <div className={styles.columns} key={index}>{
-                                                            columns.map(task => {
-                                                                return (
-                                                                    <div className={styles.task} key={task.id}>
-                                                                        <p>{task.title}</p>
-                                                                        <span>{task.responsable.name.split(' ')[0]}</span>
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }</div>
-                                                    )
-                                                })
-                                            }
-                                        </div>
+                                    <div className={styles.backlog} key={index}>
+                                        <DragDropContext onDragEnd={result => handleOnDragEnd(result, backlog.id)}>
+                                            <div className={styles.title}>
+                                                <strong>BL{backlog.id}</strong> <span>{backlog.title}</span>
+                                                <span className={styles.responsable}>{backlog.responsable.name}</span>
+                                            </div>
+                                            <div className={styles.buttons}>
+                                                <button><FaEye /> Detalhes</button>
+                                                <button><FaPlus /> Task</button>
+                                            </div>
+                                            <div className={styles.body}>
+                                                {
+                                                    backlog.tasks.map((columns, index) => {
+                                                        return (
+                                                            <div className={styles.columns} key={index}>{
+                                                                <Droppable droppableId={String(index)} key={String(index)}>
+                                                                    {(provided, snapshot) => (
+                                                                        <div
+                                                                            {...provided.droppableProps}
+                                                                            ref={provided.innerRef}
+                                                                            style={{
+                                                                                padding: 3,
+                                                                                height: '100%',
+                                                                                background: snapshot.isDraggingOver
+                                                                                    ? "#eaf2fb"
+                                                                                    : "white"
+                                                                            }}
+                                                                        >
+                                                                            {
+                                                                                columns.map((task, index) => {
+                                                                                    return (
+                                                                                        <Draggable
+                                                                                            key={task.id}
+                                                                                            draggableId={String(task.id)}
+                                                                                            index={index}
+                                                                                        >
+                                                                                            {(provided, snapshot) => (
+                                                                                                <div
+                                                                                                    ref={provided.innerRef}
+                                                                                                    {...provided.draggableProps}
+                                                                                                    {...provided.dragHandleProps}
+                                                                                                    className={styles.task}
+                                                                                                    key={task.id}
+                                                                                                >
+                                                                                                    <p>{task.title}</p>
+                                                                                                    <span>{task.responsable.name.split(' ')[0]}</span>
+                                                                                                </div>
+                                                                                            )}
+                                                                                        </Draggable>
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                            {provided.placeholder}
+                                                                        </div>
+
+                                                                    )}
+                                                                </Droppable>
+                                                            }</div>
+                                                        )
+                                                    })
+                                                }
+
+                                            </div>
+                                        </DragDropContext>
                                     </div>
                                 )
                             })
                         }
-                    </div>
-                    <div>
 
                     </div>
                 </div>
-            </main>
+            </main >
 
-        </DefaultLayout>
+        </DefaultLayout >
     )
 }
 
