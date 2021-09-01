@@ -6,8 +6,10 @@ import { GetServerSideProps } from "next";
 import { format, parseISO } from 'date-fns';
 import { ptBR } from "date-fns/locale";
 import { useState } from "react";
-import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
-import { FaEye, FaPlus } from "react-icons/fa";
+import { DragDropContext, Draggable, Droppable, DropResult, resetServerContext } from "react-beautiful-dnd";
+import { FaEye, FaPlus, FaTimes } from "react-icons/fa";
+import ReactModal from "react-modal";
+import { useToast } from "@contexts/ToastContext";
 
 interface User {
     id: string,
@@ -62,6 +64,14 @@ interface DashboardListPros {
 export default function Dashboard({ sprintProp, sprintList }: DashboardListPros) {
 
     const [sprint, setSprint] = useState<Sprint>(sprintProp);
+    const [backlogDetails, setBacklogDetails] = useState<Backlog>();
+    const [isOpenModalDetailsBacklog, setIsOpenModalDetailsBacklog] = useState(false);
+    const { addToast } = useToast();
+
+    function handleClickBacklogDetails(backlog: Backlog) {
+        setIsOpenModalDetailsBacklog(true);
+        setBacklogDetails(backlog);
+    }
 
     function handleOnDragEnd(result: DropResult, idBoard: number) {
         if (!result.destination) return;
@@ -73,6 +83,12 @@ export default function Dashboard({ sprintProp, sprintList }: DashboardListPros)
             const destColumn = backlogs[usedLeagueBoardIndex].tasks[destination.droppableId];
             const [removed] = sourceColumn.splice(source.index, 1);
             destColumn.splice(destination.index, 0, removed);
+            // console.log(removed.id)
+            try {
+                browserAPIRequest.patch(`/task/move/${removed.id}`, { "position": Number(destination.droppableId) + 1 })
+            } catch {
+                addToast({ title: "Erro", description: "Erro ao salvar task", type: "error" })
+            }
 
             setSprint(
                 {
@@ -132,7 +148,7 @@ export default function Dashboard({ sprintProp, sprintList }: DashboardListPros)
                                                 <span className={styles.responsable}>{backlog.responsable.name}</span>
                                             </div>
                                             <div className={styles.buttons}>
-                                                <button><FaEye /> Detalhes</button>
+                                                <button onClick={() => handleClickBacklogDetails(backlog)}><FaEye /> Detalhes</button>
                                                 <button><FaPlus /> Task</button>
                                             </div>
                                             <div className={styles.body}>
@@ -196,6 +212,20 @@ export default function Dashboard({ sprintProp, sprintList }: DashboardListPros)
 
                     </div>
                 </div>
+
+                <ReactModal
+                    isOpen={isOpenModalDetailsBacklog}
+                    contentLabel="Minimal Modal Example"
+                    ariaHideApp={false}
+                    shouldCloseOnOverlayClick
+                >
+                    <div >
+                        <button style={{ float: "right", border: "none", background: "none" }} onClick={() => setIsOpenModalDetailsBacklog(false)}><FaTimes /></button>
+                        <input type="text" value={backlogDetails?.title} />
+                        <p>{backlogDetails?.description}</p>
+                        <p>{backlogDetails?.responsable.name}</p>
+                    </div>
+                </ReactModal>
             </main >
 
         </DefaultLayout >
@@ -203,7 +233,7 @@ export default function Dashboard({ sprintProp, sprintList }: DashboardListPros)
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-
+    resetServerContext()
     const { ['suportewatoken']: token } = parseCookies(ctx);
 
     if (!token) {
