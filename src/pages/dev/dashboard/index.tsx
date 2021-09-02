@@ -27,6 +27,7 @@ type FormBacklogData = {
     title: string;
     description: string;
     idResponsable: string;
+    isOpen: boolean;
 };
 
 interface User {
@@ -283,7 +284,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                             {
                                 sprintList.map(e => {
                                     return (
-                                        <option key={e.id} value={e.id} selected={e.id == sprint.id} >{`${e.id} - ${e.name} (${e.startDate}/${e.expectedEndDate})`}</option>
+                                        <option key={e.id} value={e.id}  >{`${e.id} - ${e.name} (${e.startDate}/${e.expectedEndDate})`}</option>
                                     )
                                 }
                                 )
@@ -460,6 +461,14 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                                     (getBacklogValue("id")) && (
                                         <button className={styles.buttonRed} onClick={() => handleDeleteBacklog(getBacklogValue("id"))} type="button"><FaTrash /></button>
                                     )
+                                }
+                                {
+                                    // (getBacklogValue("isOpen")) ?? (
+                                    //     <button className={styles.buttonRed} onClick={() => handleDeleteBacklog(getBacklogValue("id"))} type="button"><FaTrash /></button>
+                                    //     ):(
+
+                                    //         <button className={styles.buttonRed} onClick={() => handleDeleteBacklog(getBacklogValue("id"))} type="button"><FaTrash /></button>
+                                    // )
                                 }
                                 <input type="submit" className={styles.button} value="Salvar" ></input>
                             </div>
