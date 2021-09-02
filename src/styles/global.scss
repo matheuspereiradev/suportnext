@@ -1,42 +1,43 @@
 :root {
     --white: #FFF;
-  
+
     --gray-50: #edf4f2;
     --gray-100: #E6E8EB;
     --gray-200: #AFB2B1;
     --light-gray: #e6e4e4;
     --gray-500: #808080;
     --gray-800: #494D4B;
-  
+
     --green-400: #04D361;
     --green-500: #029946;
     --green-600: #03803b;
-    
+
     --purple-300: #9F75FF;
-    --purple-400: #9164FA; 
+    --purple-400: #9164FA;
     --purple-500: #8257E5;
     --purple-800: #6F48C9;
 
-    --light-border:#cfcece;
-    --ultra-light-border:#f0f0f0;
+    --light-border: #cfcece;
+    --ultra-light-border: #f0f0f0;
+    --light-red: #e49592;
 
     --primary: #232931;
     --primary-light: #313944;
 
-    --blue:#0053C9;
-    --blue-wa:#2CA0E3;
+    --blue: #0053C9;
+    --blue-wa: #2CA0E3;
 
     --success: #6DBF6D;
     --info: #6CC6E1;
     --error: #DD6561;
-    --warning:#F1B560;
+    --warning: #F1B560;
 
     --light-red-100: #fddede;
     --light-red-300: #c53030;
 
-    --light-blue:#076eff;
-    --blue-wa:#2CA0E3;
-    --light-blue-100:#579FFB;
+    --light-blue: #076eff;
+    --blue-wa: #2CA0E3;
+    --light-blue-100: #579FFB;
 
     --black: #000000;
 
@@ -51,8 +52,8 @@
 }
 
 * {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
@@ -61,45 +62,54 @@
     html {
         font-size: 80%;
     }
- }
+}
 
 @media (max-width: 1080px) {
     html {
-        font-size: 93.75%;// 15px
+        font-size: 93.75%; // 15px
     }
- }
+}
 
- @media (max-width: 720px) {
+@media (max-width: 720px) {
     html {
-        font-size: 87.5%;// 14px
+        font-size: 87.5%; // 14px
     }
- }
+}
 
 body {
     background: var(--gray-50);
 }
 
-hr{
+hr {
     border: none;
     height: 1px;
     /* Set the hr color */
-    background-color:var(--blue-wa); /* old IE */
+    background-color: var(--blue-wa);
+    /* old IE */
 }
 
-body, input, textarea, button {
-    font: 500 1rem iNTER,  sans-serif;
+body,
+input,
+textarea,
+button {
+    font: 500 1rem iNTER, sans-serif;
     color: var(--primary);
-    
+
 }
 
-h1, h2, h3 ,h4 ,h5 ,h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-weight: 600;
     font-family: Lexend, sans-serif;
     color: var(--gray-800);
 }
 
 h1 {
-    font-size:2rem;
+    font-size: 2rem;
 }
 
 h2 {

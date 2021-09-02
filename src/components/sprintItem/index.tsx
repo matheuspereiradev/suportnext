@@ -1,6 +1,6 @@
 
 import styles from "./style.module.scss";
-import Link from 'next/link'
+import Route from 'next/router'
 import { FaCircle, FaPenAlt, FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 
 interface Sprint {
@@ -29,7 +29,7 @@ export function SprintItem({ id, expectedEndDate, isOpen, name, startDate, delet
                 </div>
 
                 <div className={styles.buttonContent}>
-                    <button className={styles.edit}><FaPencilAlt /></button>
+                    <button onClick={() => Route.push(`/dev/sprints/${id}`)} className={styles.edit}><FaPencilAlt /></button>
                     <button className={styles.delete} onClick={() => { deleteFunction(id) }}><FaTrashAlt /></button>
                 </div>
             </div>

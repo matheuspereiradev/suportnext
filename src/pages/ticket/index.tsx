@@ -30,15 +30,6 @@ export default function TicketList({ tickets }: TicketListPros) {
   const [startDate, setStartDate] = useState<string>(format(new Date().setDate(new Date().getDate() - 15), 'yyyy-MM-dd'))
   const [endDate, setEndDate] = useState<string>(format(new Date(), 'yyyy-MM-dd'))
   const [onlyMy, setOnlyMy] = useState<boolean>(false)
-  // const [categoriesFilter, setCategoriesFilter] = useState<number[]>([])
-
-  // const changeCategories = (e)=>{
-  //   if(e.target.checked){
-  //     setCategoriesFilter([...categoriesFilter,Number(e.target.value)])
-  //   }else{
-  //     setCategoriesFilter(categoriesFilter.filter(c=>c!==Number(e.target.value)))
-  //   }
-  // }
 
   function handleFilters() {
     setFilterTickets(tickets)
@@ -58,7 +49,6 @@ export default function TicketList({ tickets }: TicketListPros) {
       ) && (onlyMy ? tkt.requester.id === user.id : true)
       && (new Date(tkt.created_at) >= new Date(startDate))
       && (new Date(tkt.created_at) < new Date(endDateTomorrow))
-      // && (categoriesFilter.filter(c=>c==tkt.category.id).length > 0)
     )
   }
 

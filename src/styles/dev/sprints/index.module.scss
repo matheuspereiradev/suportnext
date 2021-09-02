@@ -5,7 +5,8 @@
     padding-bottom: 2rem;
 
     .header {
-        // display: flex;
+        display: flex;
+        justify-content: center;
         width: 100%;
 
         h1 {
@@ -18,6 +19,7 @@
             height: 3rem;
             padding: 0.9rem 0.7rem 0.9rem 0.7rem;
             margin: 1rem;
+            margin-top: 0rem;
             border-radius: 4rem;
             border: var(--blue-wa) solid 1px;
             text-decoration: none;
