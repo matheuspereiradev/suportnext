@@ -82,19 +82,42 @@ interface DashboardListPros {
     usersAdmin: User[];
 }
 
+const socket = io('http://localhost:3030')
+
 export default function Dashboard({ sprintProp, sprintList, usersAdmin }: DashboardListPros) {
 
     const [sprint, setSprint] = useState<Sprint>(sprintProp);
+    const [showClosed, setShowClosed] = useState<boolean>(false);
+    const [textFilter, setTextFilter] = useState<string>('');
+    const [filterResponsable, setFilterResponsable] = useState<string>('');
     const [isOpenModalBacklog, setIsOpenModalBacklog] = useState(false);
     const [isOpenModalTask, setIsOpenModalTask] = useState(false);
     const { addToast } = useToast();
     const { register: registerTask, setValue: setTaskValue, getValues: getTaskValue, handleSubmit: handleSubmitTask, formState: { errors: errorsTask } } = useForm<FormTaskData>();
     const { register: registerBacklog, setValue: setBacklogValue, getValues: getBacklogValue, handleSubmit: handleSubmitBacklog, formState: { errors: errorsBacklog } } = useForm<FormBacklogData>();
 
-    const socket = io('http://localhost:3030')
-    socket.on('haveUpdate', () => {
-        // findSprintDetails(String(sprint.id))
-    })
+    useEffect(() => {
+        socket.on('haveUpdate', () => {
+            // console.log('updte')
+            findSprintDetails(String(sprint.id))
+        })
+    }, []);
+
+    function handleFilters() {
+        setSprint({
+            ...sprint,
+            backlogs: sprintProp.backlogs.filter(applyFilters)
+        })
+    }
+
+    const applyFilters = (bkl: Backlog) => {
+        return (
+            (new RegExp(textFilter, 'i').test(bkl.title) ||
+                String(bkl.id) == textFilter
+            ) && (!showClosed ? bkl.isOpen === true : true)
+            && (filterResponsable !== '' ? bkl.responsable.id === filterResponsable : true)
+        )
+    }
 
     const onSubmitTaskForm = handleSubmitTask(async (data) => {
 
@@ -108,6 +131,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
             try {
                 const res = await browserAPIRequest.put(`/task/${data.id}`, dataFormatted);
                 closeModalTasks();
+                socket.emit('changeInfo')
                 // addToast({ title: "Sucesso", description: "Ticket cadastrado com sucesso", type: "success" })
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao salvar task", type: "error" })
@@ -124,6 +148,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                 const res = await browserAPIRequest.post(`/task`, dataFormatted);
                 closeModalTasks();
                 // addToast({ title: "Sucesso", description: "Ticket cadastrado com sucesso", type: "success" })
+                socket.emit('changeInfo')
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao salvar task", type: "error" })
             }
@@ -132,8 +157,6 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
 
     });
     const onSubmitBacklogForm = handleSubmitBacklog(async (data) => {
-
-
         if (data.id) {
             const dataFormatted = {
                 title: data.title,
@@ -143,7 +166,8 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
             try {
                 await browserAPIRequest.put(`/backlog/${data.id}`, dataFormatted);
                 closeModalBacklog();
-                // addToast({ title: "Sucesso", description: "Ticket cadastrado com sucesso", type: "success" })
+                socket.emit('changeInfo')
+                addToast({ title: "Sucesso", description: "Backlog salvo com sucesso", type: "success" })
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao salvar backlog", type: "error" })
             }
@@ -158,6 +182,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                 await browserAPIRequest.post(`/backlog`, dataFormatted);
                 addToast({ title: "Sucesso", description: "Backlog cadastrado com sucesso", type: "success" })
                 closeModalBacklog();
+                socket.emit('changeInfo')
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao salvar backlog", type: "error" })
             }
@@ -207,6 +232,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                 await browserAPIRequest.delete(`/backlog/${id}`);
                 closeModalBacklog();
                 addToast({ title: "Sucesso", description: "Backlog excluido com sucesso", type: "success" })
+                socket.emit('changeInfo')
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao excluir backlog", type: "error" })
             }
@@ -217,6 +243,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
             try {
                 await browserAPIRequest.delete(`/task/${id}`);
                 closeModalTasks();
+                socket.emit('changeInfo')
                 // addToast({ title: "Sucesso", description: "Backlog excluido com sucesso", type: "success" })
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao excluir task", type: "error" })
@@ -298,7 +325,40 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                             }
                         </select>
 
-                        <button className={styles.button} onClick={() => handleClickBacklogDetails(undefined)}>Adicionar backlog</button>
+                        <button
+                            className={styles.button}
+                            onClick={() => handleClickBacklogDetails(undefined)}
+                        >
+                            Adicionar backlog
+                        </button>
+
+                        <div className={styles.filters}>
+                            <input type="text" placeholder="Buscar (Cód, titulo, domínio)" value={textFilter} onChange={
+                                event => {
+                                    setTextFilter(event.target.value);
+                                }
+                            } />
+                            <div className={styles.value}>
+                                <label className={styles.withPointer}><input type="checkbox"
+                                    checked={showClosed}
+                                    onChange={() => { setShowClosed(!showClosed) }}
+                                /> Exibir fechados</label>
+                            </div>
+                            <select value={filterResponsable} onChange={(event) => { setFilterResponsable(event.target.value) }}>
+                                <option value="">Todos responsáveis</option>
+                                {
+                                    usersAdmin && (
+                                        usersAdmin.map(usr => {
+                                            return (<option value={usr.id} key={usr.id}>{`${usr.name} ${usr.surname}`}</option>)
+                                        })
+                                    )
+                                }
+
+                            </select>
+                            <button onClick={() => handleFilters()}>
+                                Filtrar
+                            </button>
+                        </div>
                     </div>
                     <div className={styles.board}>
                         {
