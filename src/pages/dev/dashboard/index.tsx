@@ -5,13 +5,14 @@ import { parseCookies } from "nookies";
 import { GetServerSideProps } from "next";
 import { format, parseISO } from 'date-fns';
 import { ptBR } from "date-fns/locale";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable, DropResult, resetServerContext } from "react-beautiful-dnd";
 import { FaBug, FaEye, FaPlus, FaTimes, FaTrash } from "react-icons/fa";
 import ReactModal from "react-modal";
 import { useToast } from "@contexts/ToastContext";
 import { useForm } from "react-hook-form";
 import { Error } from "@components/error";
+import { io, Socket } from "socket.io-client"
 
 type FormTaskData = {
     id: number;
@@ -90,6 +91,11 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
     const { register: registerTask, setValue: setTaskValue, getValues: getTaskValue, handleSubmit: handleSubmitTask, formState: { errors: errorsTask } } = useForm<FormTaskData>();
     const { register: registerBacklog, setValue: setBacklogValue, getValues: getBacklogValue, handleSubmit: handleSubmitBacklog, formState: { errors: errorsBacklog } } = useForm<FormBacklogData>();
 
+    const socket = io('http://localhost:3030')
+    socket.on('haveUpdate', () => {
+        // findSprintDetails(String(sprint.id))
+    })
+
     const onSubmitTaskForm = handleSubmitTask(async (data) => {
 
         if (data.id) {
@@ -161,6 +167,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
     });
 
     function handleClickBacklogDetails(backlog: Backlog) {
+
         setIsOpenModalBacklog(true);
         if (backlog) {
             setBacklogValue("title", backlog.title)
@@ -248,7 +255,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                     backlogs
                 }
             )
-
+            socket.emit('changeInfo')
         } else {
             const column = backlogs[usedLeagueBoardIndex].tasks[source.droppableId];
             const [removed] = column.splice(source.index, 1);
