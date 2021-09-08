@@ -71,7 +71,8 @@ export interface Sprint {
     expectedEndDate: Date,
     isOpen: boolean,
     backlogs: Backlog[]
-}
+};
+
 interface SprintList {
     id: number,
     name: string,
@@ -108,10 +109,10 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
     }, []);
 
     async function handleFilters() {
-
+        const spr = await browserAPIRequest.get(`/sprint/find/${sprint.id}`);
         setSprint({
-            ...sprint,
-            backlogs: sprintProp.backlogs.filter(applyFilters)
+            ...spr.data,
+            backlogs: spr.data.backlogs.filter(applyFilters)
         })
     }
 
@@ -135,10 +136,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                 isBug: data.isBug
             }
             try {
-                await browserAPIRequest.put(`/task/${data.id}`, dataFormatted);
-                // const task = await browserAPIRequest.get(`/task/find/${data.id}`)
-                // const index = sprint.backlogs.findIndex(bkl => bkl.id === task.data.id);
-                // sprint.backlogs.splice(index, 1, backlog.data)
+                const res = await browserAPIRequest.put(`/task/${data.id}`, dataFormatted);
 
                 closeModalTasks();
                 // socket.emit('changeInfo')
@@ -155,6 +153,12 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
             }
             try {
                 const res = await browserAPIRequest.post(`/task`, dataFormatted);
+
+                const backlog = await browserAPIRequest.get(`/backlog/find/${data.idBacklog}`)
+                const index = sprint.backlogs.findIndex(bkl => bkl.id === backlog.data.id);
+                sprint.backlogs.splice(index, 1, backlog.data)
+                // sprint.backlogs.splice(index, 1, backlog.data)
+
                 closeModalTasks();
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao salvar task", type: "error" })
@@ -291,11 +295,11 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
     function handleOnDragEnd(result: DropResult, idBoard: number) {
         if (!result.destination) return;
         const { source, destination } = result;
-        const usedLeagueBoardIndex = sprint.backlogs.findIndex(element => element.id === idBoard);
+        const usedBoardIndex = sprint.backlogs.findIndex(element => element.id === idBoard);
         const backlogs = JSON.parse(JSON.stringify(sprint.backlogs));
         if (source.droppableId !== destination.droppableId) {
-            const sourceColumn = backlogs[usedLeagueBoardIndex].tasks[source.droppableId];
-            const destColumn = backlogs[usedLeagueBoardIndex].tasks[destination.droppableId];
+            const sourceColumn = backlogs[usedBoardIndex].tasks[source.droppableId];
+            const destColumn = backlogs[usedBoardIndex].tasks[destination.droppableId];
             const [removed] = sourceColumn.splice(source.index, 1);
             destColumn.splice(destination.index, 0, removed);
             // console.log(removed.id)
@@ -313,7 +317,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
             )
             // socket.emit('changeInfo')
         } else {
-            const column = backlogs[usedLeagueBoardIndex].tasks[source.droppableId];
+            const column = backlogs[usedBoardIndex].tasks[source.droppableId];
             const [removed] = column.splice(source.index, 1);
             column.splice(destination.index, 0, removed);
 
