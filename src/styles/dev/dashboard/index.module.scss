@@ -145,7 +145,6 @@
                 width: 100%;
                 border-radius: .5rem;
                 background-color: white;
-                border: 1px var(--light-border) solid;
 
                 .title {
                     display: flex;
@@ -291,6 +290,27 @@
             &:hover {
                 background-color: var(--blue);
                 border: var(--blue) solid 1px;
+                color: var(--white);
+            }
+        }
+
+        .buttonClose {
+            margin: .5rem;
+            cursor: pointer;
+
+            height: 3rem;
+            min-width: 3rem;
+            padding: 0.9rem 0.7rem 0.9rem 0.7rem;
+            border-radius: 4rem;
+            border: var(--green-450) solid 1px;
+            text-decoration: none;
+            background-color: var(--green-450);
+            color: var(--white);
+            transition: background-color 0.3s;
+
+            &:hover {
+                background-color: var(--green-600);
+                border: var(--green-600) solid 1px;
                 color: var(--white);
             }
         }

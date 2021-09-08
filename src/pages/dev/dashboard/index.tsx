@@ -7,12 +7,13 @@ import { format, parseISO } from 'date-fns';
 import { ptBR } from "date-fns/locale";
 import { useState, useEffect } from "react";
 import { DragDropContext, Draggable, Droppable, DropResult, resetServerContext } from "react-beautiful-dnd";
-import { FaBug, FaEye, FaPlus, FaTimes, FaTrash } from "react-icons/fa";
+import { FaBug, FaCheck, FaEye, FaPlus, FaTimes, FaTrash } from "react-icons/fa";
 import ReactModal from "react-modal";
 import { useToast } from "@contexts/ToastContext";
 import { useForm } from "react-hook-form";
 import { Error } from "@components/error";
-import { io, Socket } from "socket.io-client"
+import { useAuth } from "@contexts/AuthContext";
+// import { io, Socket } from "socket.io-client"
 
 type FormTaskData = {
     id: number;
@@ -82,10 +83,10 @@ interface DashboardListPros {
     usersAdmin: User[];
 }
 
-const socket = io('http://localhost:3030')
+// const socket = io('http://localhost:3030')
 
 export default function Dashboard({ sprintProp, sprintList, usersAdmin }: DashboardListPros) {
-
+    const { user } = useAuth();
     const [sprint, setSprint] = useState<Sprint>(sprintProp);
     const [showClosed, setShowClosed] = useState<boolean>(false);
     const [textFilter, setTextFilter] = useState<string>('');
@@ -97,10 +98,11 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
     const { register: registerBacklog, setValue: setBacklogValue, getValues: getBacklogValue, handleSubmit: handleSubmitBacklog, formState: { errors: errorsBacklog } } = useForm<FormBacklogData>();
 
     useEffect(() => {
-        socket.on('haveUpdate', () => {
-            // console.log('updte')
-            findSprintDetails(String(sprint.id))
-        })
+        handleFilters();
+        // socket.on('haveUpdate', () => {
+        //     // console.log('updte')
+        //     findSprintDetails(String(sprint.id))
+        // })
     }, []);
 
     function handleFilters() {
@@ -131,7 +133,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
             try {
                 const res = await browserAPIRequest.put(`/task/${data.id}`, dataFormatted);
                 closeModalTasks();
-                socket.emit('changeInfo')
+                // socket.emit('changeInfo')
                 // addToast({ title: "Sucesso", description: "Ticket cadastrado com sucesso", type: "success" })
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao salvar task", type: "error" })
@@ -148,7 +150,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                 const res = await browserAPIRequest.post(`/task`, dataFormatted);
                 closeModalTasks();
                 // addToast({ title: "Sucesso", description: "Ticket cadastrado com sucesso", type: "success" })
-                socket.emit('changeInfo')
+                // socket.emit('changeInfo')
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao salvar task", type: "error" })
             }
@@ -166,7 +168,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
             try {
                 await browserAPIRequest.put(`/backlog/${data.id}`, dataFormatted);
                 closeModalBacklog();
-                socket.emit('changeInfo')
+                // socket.emit('changeInfo')
                 addToast({ title: "Sucesso", description: "Backlog salvo com sucesso", type: "success" })
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao salvar backlog", type: "error" })
@@ -182,7 +184,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                 await browserAPIRequest.post(`/backlog`, dataFormatted);
                 addToast({ title: "Sucesso", description: "Backlog cadastrado com sucesso", type: "success" })
                 closeModalBacklog();
-                socket.emit('changeInfo')
+                // socket.emit('changeInfo')
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao salvar backlog", type: "error" })
             }
@@ -202,7 +204,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
         } else {
             setBacklogValue("title", "")
             setBacklogValue("description", "")
-            setBacklogValue("idResponsable", usersAdmin[0].id)
+            setBacklogValue("idResponsable", user.id)
             setBacklogValue("id", undefined)
         }
 
@@ -226,13 +228,24 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
         }
     }
 
+    async function handleCloseBacklog(id: number) {
+        try {
+            await browserAPIRequest.patch(`/backlog/close/${id}`);
+            closeModalBacklog();
+            // addToast({ title: "Sucesso", description: "Backlog excluido com sucesso", type: "success" })
+            // socket.emit('changeInfo')
+        } catch (e) {
+            addToast({ title: "Erro", description: "Erro ao fechar/reabrir backlog", type: "error" })
+        }
+    }
+
     async function handleDeleteBacklog(id: number) {
         if (confirm(`deseja realmente excluir a o backlog ${id}?`)) {
             try {
                 await browserAPIRequest.delete(`/backlog/${id}`);
                 closeModalBacklog();
                 addToast({ title: "Sucesso", description: "Backlog excluido com sucesso", type: "success" })
-                socket.emit('changeInfo')
+                // socket.emit('changeInfo')
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao excluir backlog", type: "error" })
             }
@@ -243,7 +256,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
             try {
                 await browserAPIRequest.delete(`/task/${id}`);
                 closeModalTasks();
-                socket.emit('changeInfo')
+                // socket.emit('changeInfo')
                 // addToast({ title: "Sucesso", description: "Backlog excluido com sucesso", type: "success" })
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao excluir task", type: "error" })
@@ -282,7 +295,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                     backlogs
                 }
             )
-            socket.emit('changeInfo')
+            // socket.emit('changeInfo')
         } else {
             const column = backlogs[usedLeagueBoardIndex].tasks[source.droppableId];
             const [removed] = column.splice(source.index, 1);
@@ -364,7 +377,8 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                         {
                             sprint.backlogs.map((backlog, index) => {
                                 return (
-                                    <div className={styles.backlog} key={index}>
+                                    <div className={styles.backlog} style={{ border: (backlog.isOpen) ? (`1px var(--light-border) solid`) : (`1px var(--red) solid`) }} key={index}>
+
                                         <DragDropContext onDragEnd={result => handleOnDragEnd(result, backlog.id)}>
                                             <div className={styles.title}>
                                                 <strong>BL{backlog.id}</strong> <span>{backlog.title}</span>
@@ -530,12 +544,23 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                                     )
                                 }
                                 {
-                                    // (getBacklogValue("isOpen")) ?? (
-                                    //     <button className={styles.buttonRed} onClick={() => handleDeleteBacklog(getBacklogValue("id"))} type="button"><FaTrash /></button>
-                                    //     ):(
-
-                                    //         <button className={styles.buttonRed} onClick={() => handleDeleteBacklog(getBacklogValue("id"))} type="button"><FaTrash /></button>
-                                    // )
+                                    (getBacklogValue("isOpen")) ? (
+                                        <button
+                                            className={styles.buttonClose}
+                                            onClick={() => { handleCloseBacklog(getBacklogValue("id")) }}
+                                            type="button"
+                                        >
+                                            Reabrir BKL
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className={styles.buttonClose}
+                                            onClick={() => { handleCloseBacklog(getBacklogValue("id")) }}
+                                            type="button"
+                                        >
+                                            Fechar BKL
+                                        </button>
+                                    )
                                 }
                                 <input type="submit" className={styles.button} value="Salvar" ></input>
                             </div>

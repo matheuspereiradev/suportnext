@@ -7,8 +7,7 @@ export function clientAPIRequest(context?: any) {
 
 
     const api = axios.create({
-        baseURL: "http://localhost:3030/",
-
+        baseURL: "https://solucoesvolpe.com.br/suportewa/",
     })
 
     if (token) {
