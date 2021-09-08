@@ -29,6 +29,7 @@ type FormBacklogData = {
     title: string;
     description: string;
     idResponsable: string;
+    domain: string;
     isOpen: boolean;
 };
 
@@ -57,6 +58,7 @@ interface Backlog {
     title: string,
     description: string,
     isOpen: boolean,
+    domain: string,
     created_at: Date,
     responsable: User,
     tasks: Array<Tasks[]>
@@ -105,7 +107,8 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
         // })
     }, []);
 
-    function handleFilters() {
+    async function handleFilters() {
+
         setSprint({
             ...sprint,
             backlogs: sprintProp.backlogs.filter(applyFilters)
@@ -121,6 +124,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
         )
     }
 
+
     const onSubmitTaskForm = handleSubmitTask(async (data) => {
 
         if (data.id) {
@@ -131,10 +135,13 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                 isBug: data.isBug
             }
             try {
-                const res = await browserAPIRequest.put(`/task/${data.id}`, dataFormatted);
+                await browserAPIRequest.put(`/task/${data.id}`, dataFormatted);
+                // const task = await browserAPIRequest.get(`/task/find/${data.id}`)
+                // const index = sprint.backlogs.findIndex(bkl => bkl.id === task.data.id);
+                // sprint.backlogs.splice(index, 1, backlog.data)
+
                 closeModalTasks();
                 // socket.emit('changeInfo')
-                // addToast({ title: "Sucesso", description: "Ticket cadastrado com sucesso", type: "success" })
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao salvar task", type: "error" })
             }
@@ -149,8 +156,6 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
             try {
                 const res = await browserAPIRequest.post(`/task`, dataFormatted);
                 closeModalTasks();
-                // addToast({ title: "Sucesso", description: "Ticket cadastrado com sucesso", type: "success" })
-                // socket.emit('changeInfo')
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao salvar task", type: "error" })
             }
@@ -158,15 +163,20 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
         }
 
     });
+
     const onSubmitBacklogForm = handleSubmitBacklog(async (data) => {
         if (data.id) {
             const dataFormatted = {
                 title: data.title,
                 description: data.description,
+                domain: data.domain,
                 idResponsable: data.idResponsable
             }
             try {
                 await browserAPIRequest.put(`/backlog/${data.id}`, dataFormatted);
+                const backlog = await browserAPIRequest.get(`/backlog/find/${data.id}`)
+                const index = sprint.backlogs.findIndex(bkl => bkl.id === backlog.data.id);
+                sprint.backlogs.splice(index, 1, backlog.data)
                 closeModalBacklog();
                 // socket.emit('changeInfo')
                 addToast({ title: "Sucesso", description: "Backlog salvo com sucesso", type: "success" })
@@ -177,12 +187,16 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
             const dataFormatted = {
                 title: data.title,
                 description: data.description,
+                domain: data.domain,
                 idSprint: sprint.id,
                 idResponsable: data.idResponsable
             }
             try {
-                await browserAPIRequest.post(`/backlog`, dataFormatted);
+                const res = await browserAPIRequest.post(`/backlog`, dataFormatted);
                 addToast({ title: "Sucesso", description: "Backlog cadastrado com sucesso", type: "success" })
+                const backlog = await browserAPIRequest.get(`/backlog/find/${res.data.id}`)
+                sprint.backlogs.push(backlog.data)
+
                 closeModalBacklog();
                 // socket.emit('changeInfo')
             } catch (e) {
@@ -200,10 +214,12 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
             setBacklogValue("title", backlog.title)
             setBacklogValue("description", backlog.description)
             setBacklogValue("idResponsable", backlog.responsable.id)
+            setBacklogValue("domain", backlog.domain)
             setBacklogValue("id", backlog.id)
         } else {
             setBacklogValue("title", "")
             setBacklogValue("description", "")
+            setBacklogValue("domain", "")
             setBacklogValue("idResponsable", user.id)
             setBacklogValue("id", undefined)
         }
@@ -240,7 +256,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
     }
 
     async function handleDeleteBacklog(id: number) {
-        if (confirm(`deseja realmente excluir a o backlog ${id}?`)) {
+        if (confirm(`deseja realmente excluir o backlog ${id}?`)) {
             try {
                 await browserAPIRequest.delete(`/backlog/${id}`);
                 closeModalBacklog();
@@ -250,19 +266,19 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                 addToast({ title: "Erro", description: "Erro ao excluir backlog", type: "error" })
             }
         }
-    }
+    };
+
     async function handleDeleteTask(id: number) {
         if (confirm(`deseja realmente excluir a task?`)) {
             try {
                 await browserAPIRequest.delete(`/task/${id}`);
                 closeModalTasks();
                 // socket.emit('changeInfo')
-                // addToast({ title: "Sucesso", description: "Backlog excluido com sucesso", type: "success" })
             } catch (e) {
                 addToast({ title: "Erro", description: "Erro ao excluir task", type: "error" })
             }
         }
-    }
+    };
 
     function closeModalBacklog() {
         setIsOpenModalBacklog(false);
@@ -381,7 +397,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
 
                                         <DragDropContext onDragEnd={result => handleOnDragEnd(result, backlog.id)}>
                                             <div className={styles.title}>
-                                                <strong>BL{backlog.id}</strong> <span>{backlog.title}</span>
+                                                <strong>BKL{backlog.id}</strong> <span>{`[${backlog.domain}] ${backlog.title}`}</span>
                                                 <span className={styles.responsable}>{backlog.responsable.name}</span>
                                             </div>
                                             <div className={styles.buttons}>
@@ -473,7 +489,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                             <input type="text" placeholder="Título" {...registerTask("title", { required: { value: true, message: "O campo título deve ter pelo menos 3 caracteres" }, minLength: { value: 3, message: "O campo título deve ter pelo menos 3 caracteres" }, maxLength: { value: 100, message: "O campo título deve ter menos de 100 caracteres" } })} />
                             <label >Descrição:</label>
                             <Error message={errorsTask.description?.message} />
-                            <textarea {...registerTask("description", { required: { value: true, message: "O campo descrição deve ter pelo menos 3 caracteres" }, minLength: { value: 3, message: "O campo descrição deve ter pelo menos 3 caracteres" }, maxLength: { value: 1000, message: "O campo título deve ter no maximo 1000 caracteres" } })} maxLength={1000} rows={7} />
+                            <textarea {...registerTask("description", { maxLength: { value: 1000, message: "O campo título deve ter no maximo 1000 caracteres" } })} maxLength={1000} rows={7} />
                             <input type="checkbox" placeholder="Bug" {...registerTask("isBug", {})} />
                             <label>Bug</label><br />
                             <label>Responsável:</label>
@@ -521,6 +537,9 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                             <label>Título:</label>
                             <Error message={errorsBacklog.title?.message} /><br />
                             <input type="text" placeholder="Título" {...registerBacklog("title", { required: { value: true, message: "O campo título deve ter pelo menos 3 caracteres" }, minLength: { value: 3, message: "O campo título deve ter pelo menos 3 caracteres" }, maxLength: { value: 100, message: "O campo título deve ter menos de 100 caracteres" } })} />
+                            <label>Domínio:</label>
+                            <Error message={errorsBacklog.domain?.message} /><br />
+                            <input type="text" placeholder="Dominio" {...registerBacklog("domain", { required: { value: true, message: "O campo título deve ter pelo menos 3 caracteres" }, minLength: { value: 3, message: "O campo título deve ter pelo menos 3 caracteres" }, maxLength: { value: 45, message: "O campo título deve ter menos de 45 caracteres" } })} />
                             <label >Descrição:</label>
                             <Error message={errorsBacklog.description?.message} />
                             <textarea {...registerBacklog("description", { required: { value: true, message: "O campo descrição deve ter pelo menos 3 caracteres" }, minLength: { value: 3, message: "O campo descrição deve ter pelo menos 3 caracteres" }, maxLength: { value: 1000, message: "O campo título deve ter no maximo 1000 caracteres" } })} maxLength={1000} rows={7} />
