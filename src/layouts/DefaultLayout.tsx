@@ -8,10 +8,10 @@ interface Props {
 }
 
 export const DefaultLayout: React.FC<Props> = ({ titleKey, children }) => {
-    return (
+  return (
     <div className={styles.defaultLayout}>
       <Head>
-        <title>WA Suporte - {titleKey}</title>
+        <title>Jake - {titleKey}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta name="copyright" content="matheuspereiradev" />
         <meta name="language" content="PT-BR" />

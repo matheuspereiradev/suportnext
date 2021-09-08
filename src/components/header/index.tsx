@@ -24,7 +24,7 @@ export function Header() {
       <ul className={styles.navLinks}>
 
         {
-          isLogged ? (
+          isLogged && (
             <>
               <div className={styles.dropdown} style={{ float: "right" }}>
                 <button className={styles.dropbtn}><FaUserCircle /> {user.name} <FaCaretDown /></button>
@@ -55,15 +55,6 @@ export function Header() {
                 Sair
             </button> */}
             </>
-          ) : (
-            <>
-              <Link href="/login">
-                <button className={styles.onlyText}>
-                  Entrar
-                </button>
-              </Link>
-            </>
-
           )
         }
 
