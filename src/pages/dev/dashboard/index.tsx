@@ -138,6 +138,10 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
             try {
                 const res = await browserAPIRequest.put(`/task/${data.id}`, dataFormatted);
 
+                const backlog = await browserAPIRequest.get(`/backlog/find/${data.idBacklog}`)
+                const index = sprint.backlogs.findIndex(bkl => bkl.id === backlog.data.id);
+                sprint.backlogs.splice(index, 1, backlog.data)
+
                 closeModalTasks();
                 // socket.emit('changeInfo')
             } catch (e) {
@@ -152,7 +156,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                 idBacklog: data.idBacklog
             }
             try {
-                const res = await browserAPIRequest.post(`/task`, dataFormatted);
+                await browserAPIRequest.post(`/task`, dataFormatted);
 
                 const backlog = await browserAPIRequest.get(`/backlog/find/${data.idBacklog}`)
                 const index = sprint.backlogs.findIndex(bkl => bkl.id === backlog.data.id);
