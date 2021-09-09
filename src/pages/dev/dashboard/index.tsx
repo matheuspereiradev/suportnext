@@ -138,7 +138,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
             try {
                 const res = await browserAPIRequest.put(`/task/${data.id}`, dataFormatted);
 
-                const backlog = await browserAPIRequest.get(`/backlog/find/${data.idBacklog}`)
+                const backlog = await browserAPIRequest.get(`/backlog/find/${res.data.idBacklog}`)
                 const index = sprint.backlogs.findIndex(bkl => bkl.id === backlog.data.id);
                 sprint.backlogs.splice(index, 1, backlog.data)
 
@@ -159,7 +159,7 @@ export default function Dashboard({ sprintProp, sprintList, usersAdmin }: Dashbo
                 await browserAPIRequest.post(`/task`, dataFormatted);
 
                 const backlog = await browserAPIRequest.get(`/backlog/find/${data.idBacklog}`)
-                const index = sprint.backlogs.findIndex(bkl => bkl.id === backlog.data.id);
+                const index = sprint.backlogs.findIndex(bkl => bkl.id === data.idBacklog);
                 sprint.backlogs.splice(index, 1, backlog.data)
                 // sprint.backlogs.splice(index, 1, backlog.data)
 

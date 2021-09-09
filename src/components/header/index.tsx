@@ -11,11 +11,11 @@ export function Header() {
       {
         isLogged ? (
           <Link href="/ticket">
-            <img src="/logo.png" alt="WA logo" className={styles.logo}></img>
+            <img src="/logo.png" alt="logo" className={styles.logo}></img>
           </Link>
         ) : (
           <Link href="/">
-            <img src="/logo.png" alt="WA logo" className={styles.logo}></img>
+            <img src="/logo.png" alt="logo" className={styles.logo}></img>
           </Link >
         )
       }

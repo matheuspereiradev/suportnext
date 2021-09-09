@@ -33,9 +33,10 @@ export default function Home() {
             <div className={styles.card}>
               <div className={styles.content}>
                 <div className={styles.loginForm}>
+                  <h2>Acesse</h2>
                   <form onSubmit={sendFormLogin}>
-                    <input type="text" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder="Email" /><br />
-                    <input type="password" value={password} onChange={(e) => { setPassword(e.target.value) }} placeholder="Senha" /><br />
+                    <input type="text" value={email} required onChange={(e) => { setEmail(e.target.value) }} placeholder="Email" /><br />
+                    <input type="password" value={password} required onChange={(e) => { setPassword(e.target.value) }} placeholder="Senha" /><br />
                     <button type="submit">Entrar</button>
                   </form>
                 </div>
